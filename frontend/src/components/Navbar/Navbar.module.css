@@ -1,0 +1,15 @@
+.Navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  background-color: #282828;
+  color: #d3d3d3;
+  padding: 10px;
+}
+.Navbar a {
+  color: #d3d3d3;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=Navbar.module.css.map */
