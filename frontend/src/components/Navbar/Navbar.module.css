@@ -2,15 +2,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
   background-color: #282828;
   color: #d3d3d3;
   padding: 12px 32px;
+}
+@media (max-width: 768px) {
+  .Navbar {
+    flex-direction: column;
+  }
 }
 
 .LinksList {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
 }
 .LinksList a {

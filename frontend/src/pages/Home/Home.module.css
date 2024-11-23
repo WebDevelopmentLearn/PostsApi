@@ -6,15 +6,16 @@
   list-style: none;
 }
 .PostsList li {
-  margin-bottom: 1rem;
+  margin: 1rem;
   background-color: #a4a4a4;
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0px 5px 10px 4px rgba(0, 0, 0, 0.1);
   width: fit-content;
-  min-width: 300px;
+  min-width: 75vw;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.5s, transform 0.5s;
 }
 .PostsList li:hover {
   background-color: #a0a0a0;

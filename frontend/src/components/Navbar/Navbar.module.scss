@@ -3,11 +3,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 
   background-color: #282828;
   color: #d3d3d3;
   padding: 12px 32px;
 
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 
 
 }
@@ -16,6 +21,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
   a {
     color: #d3d3d3;
@@ -30,4 +36,5 @@
     color: #59889c;
   }
 }
+
 
