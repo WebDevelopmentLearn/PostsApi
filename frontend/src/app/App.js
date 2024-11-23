@@ -14,7 +14,6 @@ function App() {
   return (
     <div className="App">
         <Navbar />
-        <h1>Posts API</h1>
         <MainRoute/>
     </div>
   );

@@ -1,15 +1,33 @@
 
 .Navbar {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #282828;
+  color: #d3d3d3;
+  padding: 12px 32px;
+
+
+
+}
+
+.LinksList {
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 16px;
-  background-color: #282828;
-  color: #d3d3d3;
-  padding: 10px;
-
   a {
     color: #d3d3d3;
     text-decoration: none;
+    transition: color 0.5s;
+
+    &:hover {
+      color: #6ea4c2;
+    }
+  }
+  .isActive {
+    color: #59889c;
   }
 }
+
