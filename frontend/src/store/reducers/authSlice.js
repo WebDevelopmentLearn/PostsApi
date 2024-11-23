@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchUser, login, logout, registerUser} from "./actionCreators";
+import {createPost, fetchUser, login, logout, registerUser} from "./actionCreators";
 
 
 const initialState = {
@@ -36,8 +36,7 @@ const authSlice = createSlice({
         }).addCase(login.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload;
-        })
-            .addCase(fetchUser.pending, (state, action) => {
+        }).addCase(fetchUser.pending, (state, action) => {
             state.status = "LOADING";
             state.error = null;
         }).addCase(fetchUser.fulfilled, (state, action) => {
@@ -58,7 +57,18 @@ const authSlice = createSlice({
         }).addCase(logout.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload;
-        });
+        }).addCase(createPost.pending, (state, action) => {
+            state.status = "LOADING";
+            state.error = null;
+        }).addCase(createPost.fulfilled, (state, action) => {
+            state.status = "SUCCEEDED";
+
+        }).addCase(createPost.rejected, (state, action) => {
+            state.status = "FAILED";
+            state.error = action.payload;
+        })
+
+        ;
     }
 });
 

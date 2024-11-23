@@ -58,3 +58,12 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (_, {reject
         return rejectWithValue(error);
     }
 });
+
+export const createPost = createAsyncThunk("posts/createPost", async (data, {rejectWithValue}) => {
+    try {
+        const response = await axios.post(`${API_URL}/posts`, data);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
