@@ -14,8 +14,8 @@ export const Navbar = () => {
             <h3>Posts API</h3>
             <div className={styles.LinksList}>
                 <NavLink className={({isActive}) => isActive ? styles.isActive : ""} to="/">Home</NavLink>
-                <NavLink className={({isActive}) => isActive ? styles.isActive : ""} to="/login">Login</NavLink>
-                <NavLink className={({isActive}) => isActive ? styles.isActive : ""} to="/register">Register</NavLink>
+                {!isAuthenticated && <NavLink className={({isActive}) => isActive ? styles.isActive : ""} to="/login">Login</NavLink>}
+                {!isAuthenticated && <NavLink className={({isActive}) => isActive ? styles.isActive : ""} to="/register">Register</NavLink>}
                 {isAuthenticated && <NavLink className={({isActive}) => isActive ? styles.isActive : ""} to="/profile">Profile</NavLink>}
             </div>
         </div>
