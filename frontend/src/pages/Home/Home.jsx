@@ -26,13 +26,13 @@ export const Home = () => {
         const content = event.target[1].value;
         // console.log(title, content);
         dispatch(createPost({title, content}));
-
+        dispatch(fetchPosts());
         setIsModalOpen(false);
     }
 
-    // useEffect(() => {
-    //     dispatch(fetchPosts());
-    // }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetchPosts());
+    }, [dispatch]);
 
     return (
         <div>
