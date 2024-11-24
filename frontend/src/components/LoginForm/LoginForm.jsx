@@ -14,13 +14,21 @@ export const LoginForm = () => {
     const navigate = useNavigate();
 
 
-    const submitForm = (data) => {
-        console.log(data);
-        const userData = {
-            username: data.usernameOrEmailInput,
-            password: data.passwordInput
+    const submitForm = async (data) => {
+        try {
+            console.log(data);
+            const userData = {
+                username: data.usernameOrEmailInput,
+                password: data.passwordInput
+            }
+            const result = dispatch(login(userData)).unwrap();
+            if (result.error) {
+                alert("Failed to login: " + result.error.message);
+            }
+        } catch (error) {
+            console.error("Error logging in: ", error);
+            alert("Failed to login: " + error.message);
         }
-        dispatch(login(userData));
     }
 
     useEffect(() => {
