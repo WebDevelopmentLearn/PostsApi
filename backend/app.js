@@ -12,17 +12,24 @@ import * as path from "node:path";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Разрешаем запросы с этих двух источников
+        if (origin === "http://35.159.129.233" || origin === "http://35.159.129.233:3000" || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true, // Разрешить отправку куков
+};
+
 async function startServer() {
     try {
         await connectToDatabase();
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
-        app.use(
-            cors({
-                origin: "http://localhost:3000", // Укажите точный адрес фронтенда
-                credentials: true, // Разрешить отправку куков
-            })
-        );
+        app.use(cors(corsOptions));
         // Используем cookie-parser для работы с куками
         app.use(cookieParser());
 
