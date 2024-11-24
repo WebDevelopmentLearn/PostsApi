@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {createPost, deletePost, fetchPosts} from "./actionCreators";
+import {createPost, deletePost, fetchPosts, uploadImage} from "./actionCreators";
 
 
 const initialState = {
@@ -37,8 +37,14 @@ export const postsSlice = createSlice({
         }).addCase(deletePost.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload;
+        }).addCase(uploadImage.pending, (state) => {
+            state.status = "LOADING";
+        }).addCase(uploadImage.fulfilled, (state, action) => {
+            state.status = "SUCCEEDED";
+        }).addCase(uploadImage.rejected, (state, action) => {
+            state.status = "FAILED";
+            state.error = action.payload;
         })
-
         ;
     }
 });

@@ -1,13 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {fetchPosts, fetchUser, createPost, deletePost} from "../../store/reducers/actionCreators";
+import {fetchPosts, fetchUser, createPost, deletePost, uploadImage, API_URL} from "../../store/reducers/actionCreators";
 import styles from "./Home.module.scss";
+import {ImageUpload} from "../../components";
 
 export const Home = () => {
     const dispatch = useDispatch();
     const {posts, status} = useSelector((state) => state.postsReducer);
     const {isAuthenticated, user} = useSelector((state) => state.authReducer);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [image, setImage] = useState(null); // Для хранения выбранного изображения
 
 
     const openModal = () => {
@@ -25,9 +27,23 @@ export const Home = () => {
         const title = event.target[0].value;
         const content = event.target[1].value;
         // console.log(title, content);
-        dispatch(createPost({title, content}));
+
+        // Создаем FormData для отправки данных
+        const form = new FormData();
+        form.append('title', title);
+        form.append('content', content);
+
+
+        if (image) {
+            form.append('image', image); // Добавляем изображение в запрос
+        }
+
+
+        dispatch(createPost(form));
         dispatch(fetchPosts());
+
         setIsModalOpen(false);
+
     }
 
     const handleDeletePost = (postId) => {
@@ -42,7 +58,9 @@ export const Home = () => {
 
     useEffect(() => {
         dispatch(fetchPosts());
+        console.log(user?.username);
     }, [dispatch]);
+
 
     return (
         <div>
@@ -57,6 +75,7 @@ export const Home = () => {
 
                             <p>{post.content}</p>
                             <p><strong>Author</strong>: {post.author.username}</p>
+                            {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '50%'}}/>}
                         </div>
                         {(isAuthenticated && post.author._id === user.id) &&
                             <button onClick={() => handleDeletePost(post._id)} className={styles.DeletePostBtn}>
@@ -82,6 +101,9 @@ export const Home = () => {
                     <h1>Create Post</h1>
                     <input type="text" placeholder="Title" />
                     <textarea className={styles.PostContentArea} placeholder="Content" />
+                    {isAuthenticated && <div>
+                        <ImageUpload onImageSelect={setImage} />
+                    </div>}
                     <button>Submit</button>
                 </form>
             </div>}

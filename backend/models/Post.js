@@ -13,6 +13,9 @@ const postSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    image: {
+        type: String,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

@@ -3,8 +3,40 @@ import authenticateToken from "../middlewares/authenticateToken.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 import mongoose from "mongoose";
+import multer from "multer";
+import path from "node:path";
+import {checkRole} from "../middlewares/checkRole.js";
+
 
 const router = Router();
+
+// Настраиваем хранилище для загруженных файлов
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Папка для сохранения файлов
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`); // Уникальное имя файла
+    },
+});
+
+// Middleware для обработки загрузки
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // Ограничение на размер файла (5MB)
+    fileFilter: (req, file, cb) => {
+        // Проверка типа файла (например, только изображения)
+        const fileTypes = /jpeg|jpg|png/;
+        const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimeType = fileTypes.test(file.mimetype);
+
+        if (extname && mimeType) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only images are allowed!'));
+        }
+    }
+});
 
 router.get("/", async (req, res, next) => {
     try {
@@ -65,7 +97,7 @@ router.delete("/:id", authenticateToken, async (req, res, next) => {
 
 
 
-router.post("/", authenticateToken, async (req, res, next) => {
+router.post("/", authenticateToken, upload.single('image'), async (req, res, next) => {
     const { title, content } = req.body;
     const user = req.user;
     if (!title || !content) {
@@ -75,10 +107,14 @@ router.post("/", authenticateToken, async (req, res, next) => {
         return res.status(403).send("Forbidden: Invalid or expired token");
     }
     try {
+
+        const imagePaths = req.file ? `/uploads/${req.file.filename}` : null;
+
         const post = new Post({
             title,
             content,
             author: user.id,
+            image: imagePaths,
         });
 
         await post.save();
@@ -93,6 +129,7 @@ router.post("/", authenticateToken, async (req, res, next) => {
         next(error);
     }
 });
+
 
 
 export default router;

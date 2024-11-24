@@ -3,7 +3,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-const API_URL = "http://localhost:3400" || process.env.REACT_APP_BACKEND_URL;
+export const API_URL = "http://localhost:3400" || process.env.REACT_APP_BACKEND_URL;
 
 export const registerUser = createAsyncThunk("auth/register", async (data, {rejectWithValue}) => {
     try {
@@ -72,6 +72,25 @@ export const createPost = createAsyncThunk("posts/createPost", async (data, {rej
 export const deletePost = createAsyncThunk("posts/deletePost", async (postId, {rejectWithValue}) => {
     try {
         const response = await axios.delete(`${API_URL}/posts/${postId}`);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
+// try {
+//     const response = await axios.post('http://35.159.129.233:3400/api/upload', formData, {
+//         headers: { 'Content-Type': 'multipart/form-data' },
+//     });
+//     setUploadStatus(response.data.message);
+// } catch (error) {
+//     setUploadStatus(error.response?.data?.error || 'Something went wrong!');
+// }
+export const uploadImage = createAsyncThunk("posts/uploadImage", async (formData, {rejectWithValue}) => {
+    try {
+        const response = await axios.post(`${API_URL}/api/upload`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
         return response.data;
     } catch (error) {
         return rejectWithValue(error);
