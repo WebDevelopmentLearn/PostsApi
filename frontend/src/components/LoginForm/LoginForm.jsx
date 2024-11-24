@@ -10,24 +10,25 @@ export const LoginForm = () => {
     const {register, handleSubmit} = useForm();
     const dispatch = useDispatch();
 
-    const {status, isAuthenticated} = useSelector((state) => state.authReducer);
+    const {status, isAuthenticated, error} = useSelector((state) => state.authReducer);
     const navigate = useNavigate();
 
 
     const submitForm = async (data) => {
         try {
-            console.log(data);
             const userData = {
                 username: data.usernameOrEmailInput,
                 password: data.passwordInput
             }
-            const result = dispatch(login(userData)).unwrap();
+            const result = await dispatch(login(userData)).unwrap();
             if (result.error) {
                 alert("Failed to login: " + result.error.message);
+            } else {
+                alert("Login successful");
             }
         } catch (error) {
             console.error("Error logging in: ", error);
-            alert("Failed to login: " + error.message);
+            alert("Failed to login: " + error.response.data);
         }
     }
 

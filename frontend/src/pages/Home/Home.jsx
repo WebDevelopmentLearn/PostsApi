@@ -89,7 +89,6 @@ export const Home = () => {
 
     useEffect(() => {
         dispatch(fetchPosts());
-        console.log(user?.username);
     }, [dispatch]);
 
 

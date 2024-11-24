@@ -14,21 +14,18 @@ export const RegisterForm = () => {
 
     const submitForm = async(data) => {
        try {
-           console.log(data);
            const registerData = {
                username: data.usernameInput,
                email: data.emailInput,
                password: data.passwordInput,
            }
-           console.log(registerData);
-           const result = dispatch(registerUser(registerData)).unwrap();
+           const result = await dispatch(registerUser(registerData)).unwrap();
            if (result.error) {
                alert("Failed to register: " + result.error.message);
            }
-
        } catch (error) {
-           console.error("Error registering: ", error);
-           alert("Failed to register: " + error.message);
+           console.error("Error register in: ", error);
+           alert("Failed to register: " + error.response.data);
        }
     }
 
