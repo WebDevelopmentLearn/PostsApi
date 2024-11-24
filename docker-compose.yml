@@ -1,0 +1,49 @@
+version: '3.8'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - dev
+
+  frontend:
+    build:
+      context: ./frontend
+    networks:
+      - dev
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/postsDB
+    ports:
+      - "3400:3400"  # Expose backend on port 3333
+    depends_on:
+      - mongo
+    networks:
+      - dev
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - dev
+
+volumes:
+  mongo-data:
