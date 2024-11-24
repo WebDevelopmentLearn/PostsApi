@@ -12,27 +12,38 @@ export const RegisterForm = () => {
     const {registerStatus, error} = useSelector((state) => state.authReducer);
     const navigate = useNavigate();
 
-    const submitForm = (data) => {
-        console.log(data);
-        const registerData = {
-            username: data.usernameInput,
-            email: data.emailInput,
-            password: data.passwordInput,
-        }
-        console.log(registerData);
-        dispatch(registerUser(registerData));
+    const submitForm = async(data) => {
+       try {
+           console.log(data);
+           const registerData = {
+               username: data.usernameInput,
+               email: data.emailInput,
+               password: data.passwordInput,
+           }
+           console.log(registerData);
+           const result = dispatch(registerUser(registerData)).unwrap();
+           if (result.error) {
+               alert("Failed to register: " + result.error.message);
+           } else {
+               alert("Registration successful");
+               navigate("/login");
+           }
+
+       } catch (error) {
+           console.error("Error registering: ", error);
+           alert("Failed to register: " + error.message);
     }
 
-    useEffect(() => {
-        if (registerStatus === "FAILED") {
-            alert(error);
-        }
-        if (registerStatus === "SUCCEEDED") {
-            alert("Registration successful");
-            navigate("/login");
-
-        }
-    }, [dispatch, registerStatus]);
+    // useEffect(() => {
+    //     if (registerStatus === "FAILED") {
+    //         alert(error);
+    //     }
+    //     if (registerStatus === "SUCCEEDED") {
+    //         alert("Registration successful");
+    //         navigate("/login");
+    //
+    //     }
+    // }, [dispatch, registerStatus]);
 
     return (
         <form className={styles.RegisterForm} onSubmit={handleSubmit(submitForm)} action="">
