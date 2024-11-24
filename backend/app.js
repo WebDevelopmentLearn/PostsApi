@@ -43,9 +43,6 @@ async function startServer() {
         // Используем cookie-parser для работы с куками
         app.use(cookieParser());
 
-
-
-
         app.get('/', (req, res, next) => {
             res.send('Hello World!');
         });
@@ -72,15 +69,6 @@ async function startServer() {
                 });
             }
         });
-
-
-        // print all the routes
-        app._router.stack.forEach((r) => {
-            if (r.route && r.route.path) {
-                console.log(r.route.path);
-            }
-        });
-
 
         app.listen(PORT, () => {
             console.log(`Server is running at: http://localhost:${PORT}`);
