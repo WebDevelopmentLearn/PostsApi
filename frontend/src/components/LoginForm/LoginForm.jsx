@@ -24,8 +24,6 @@ export const LoginForm = () => {
             const result = dispatch(login(userData)).unwrap();
             if (result.error) {
                 alert("Failed to login: " + result.error.message);
-            } else {
-                alert("Login successful");
             }
         } catch (error) {
             console.error("Error logging in: ", error);

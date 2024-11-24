@@ -24,9 +24,6 @@ export const RegisterForm = () => {
            const result = dispatch(registerUser(registerData)).unwrap();
            if (result.error) {
                alert("Failed to register: " + result.error.message);
-           } else {
-               alert("Registration successful");
-               navigate("/login");
            }
 
        } catch (error) {
@@ -35,16 +32,14 @@ export const RegisterForm = () => {
        }
     }
 
-    // useEffect(() => {
-    //     if (registerStatus === "FAILED") {
-    //         alert(error);
-    //     }
-    //     if (registerStatus === "SUCCEEDED") {
-    //         alert("Registration successful");
-    //         navigate("/login");
-    //
-    //     }
-    // }, [dispatch, registerStatus]);
+    useEffect(() => {
+
+        if (registerStatus === "SUCCEEDED") {
+            alert("Registration successful");
+            navigate("/login");
+
+        }
+    }, [dispatch, registerStatus]);
 
     return (
         <form className={styles.RegisterForm} onSubmit={handleSubmit(submitForm)} action="">
