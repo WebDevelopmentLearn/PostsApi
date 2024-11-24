@@ -41,7 +41,19 @@ async function startServer() {
 
         app.use((err, req, res, next) => {
             console.error(err.stack);
-            res.status(500).send('Something broke! Please see the console for more information.');
+            if (err instanceof multer.MulterError) {
+                return res.status(400).json({
+                    message: "File size should be less than 5MB",
+                });
+            } else if (err.code === 400) {
+                return res.status(400).json({
+                    message: err.message,
+                });
+            } else {
+                return res.status(500).json({
+                    message: "Internal Server Error",
+                });
+            }
         });
 
 

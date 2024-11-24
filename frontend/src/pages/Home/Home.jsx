@@ -6,7 +6,7 @@ import {ImageUpload} from "../../components";
 
 export const Home = () => {
     const dispatch = useDispatch();
-    const {posts, status} = useSelector((state) => state.postsReducer);
+    const {posts, status, createPostStatus, error} = useSelector((state) => state.postsReducer);
     const {isAuthenticated, user} = useSelector((state) => state.authReducer);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [image, setImage] = useState(null); // Для хранения выбранного изображения
@@ -22,36 +22,67 @@ export const Home = () => {
         }
     }
 
-    const submitPost = (event) => {
+    const submitPost = async (event) => {
         event.preventDefault();
         const title = event.target[0].value;
         const content = event.target[1].value;
         // console.log(title, content);
 
-        // Создаем FormData для отправки данных
-        const form = new FormData();
-        form.append('title', title);
-        form.append('content', content);
+       try {
+           // Создаем FormData для отправки данных
+           const form = new FormData();
+           form.append('title', title);
+           form.append('content', content);
 
 
-        if (image) {
-            form.append('image', image); // Добавляем изображение в запрос
-        }
+           if (image) {
+               form.append('image', image); // Добавляем изображение в запрос
+           }
 
 
-        dispatch(createPost(form));
-        dispatch(fetchPosts());
+           //dispatch(createPost(form));
+           const result = await dispatch(createPost(form)).unwrap();
+           // dispatch(fetchPosts());
 
-        setIsModalOpen(false);
+           if (result.error) {
+                alert("Failed to create post: " + result.error.message);
+           } else {
+                alert("Post successfully created");
+                setIsModalOpen(false);
+                dispatch(fetchPosts());
+           }
+
+
+           // if (createPostStatus === "SUCCEEDED" && !error) {
+           //     alert("Post successfully created");
+           //     setIsModalOpen(false);
+           // }
+           // if (createPostStatus === "FAILED" && error) {
+           //     alert("Failed to create post: " + error.message);
+           //
+           // }
+       } catch (error) {
+           console.log(error);
+           alert("Failed to create post: " + error.message);
+       }
+
 
     }
 
-    const handleDeletePost = (postId) => {
+    const handleDeletePost = async (postId) => {
         console.log(postId);
-        dispatch(deletePost(postId));
-        dispatch(fetchPosts());
-        if (status === "SUCCEEDED") {
-            alert("Post successfully deleted");
+
+        try {
+            const result = await dispatch(deletePost(postId)).unwrap();
+            if (result.error) {
+                alert("Failed to delete post: " + result.error.message);
+            } else {
+                alert("Post successfully deleted");
+                dispatch(fetchPosts());
+            }
+        } catch (error) {
+            console.log(error);
+            alert("Failed to delete post: " + error.message);
         }
 
     }

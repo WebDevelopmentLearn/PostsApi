@@ -35,7 +35,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
         }).addCase(login.rejected, (state, action) => {
             state.status = "FAILED";
-            state.error = action.payload;
+            state.error = action.payload.response.data;
         }).addCase(fetchUser.pending, (state, action) => {
             state.status = "LOADING";
             state.error = null;
@@ -45,7 +45,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
         }).addCase(fetchUser.rejected, (state, action) => {
             state.status = "FAILED";
-            state.error = action.payload;
+            state.error = action.payload.response.data;
         }).addCase(logout.pending, (state, action) => {
             state.status = "LOADING";
             state.error = null;
@@ -56,7 +56,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
         }).addCase(logout.rejected, (state, action) => {
             state.status = "FAILED";
-            state.error = action.payload;
+            state.error = action.payload.response.data;
         })
 
         ;

@@ -33,7 +33,10 @@ const upload = multer({
         if (extname && mimeType) {
             cb(null, true);
         } else {
-            cb(new Error('Only images are allowed!'));
+            // cb(new Error('Only images are allowed!'));
+            const error = new Error('Only images are allowed!');
+            error.code = 400;
+            return cb(error);
         }
     }
 });

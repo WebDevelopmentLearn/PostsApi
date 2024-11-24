@@ -26,8 +26,8 @@ export const ImageUpload = ({ onImageSelect }) => {
 
     return (
         <div style={{margin: "16px"}}>
-            <input style={{display: "none"}} id="uploadImage" type="file" accept="image/*" onChange={handleFileChange}/>
-            <label style={{border: "1px dashed #000000", padding: "16px"}} htmlFor="uploadImage">Click for upload image</label>
+            <input style={{display: "none"}} id="uploadImage" type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileChange}/>
+            <label style={{border: "1px dashed #000000", padding: "16px", cursor: "pointer"}} htmlFor="uploadImage">Click for upload image</label>
             {preview && <img src={preview} alt="Preview" style={{width: '200px', marginTop: '10px'}}/>}
             {uploadStatus && <p>{uploadStatus}</p>}
         </div>
