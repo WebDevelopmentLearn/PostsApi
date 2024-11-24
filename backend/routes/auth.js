@@ -28,7 +28,8 @@ router.post("/register", checkUserIsAlreadyRegistered, async (req, res, next) =>
         const user = new User({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: "user",
         });
 
         await user.save();
@@ -64,7 +65,8 @@ router.post("/login", async (req, res, next) => {
 
         const token = jwt.sign({
             id: user._id,
-            username: user.username
+            username: user.username,
+            role: user.role,
         }, jwtSecret, {
             expiresIn: "1h",
         });
@@ -92,8 +94,8 @@ router.get("/profile", authenticateToken, async(req, res, next) => {
         if (!user) {
             return res.status(404).send("User not found");
         }
-        const { id, username, email } = user;
-        res.json({ id, username, email });
+        const { id, username, email, role } = user;
+        res.json({ id, username, email, role });
 
     } catch (error) {
         console.error("Error getting user data: ", error);
