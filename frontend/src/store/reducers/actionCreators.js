@@ -61,7 +61,9 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (_, {reject
 
 export const createPost = createAsyncThunk("posts/createPost", async (data, {rejectWithValue}) => {
     try {
-        const response = await axios.post(`${API_URL}/posts`, data);
+        const response = await axios.post(`${API_URL}/posts`, data, {
+            withCredentials: true,  // Это позволяет отправить куки
+        });
         return response.data;
     } catch (error) {
         return rejectWithValue(error);
