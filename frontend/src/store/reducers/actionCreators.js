@@ -3,7 +3,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-export const API_URL = "http://localhost:3400" || process.env.REACT_APP_BACKEND_URL;
+export const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3400";
 
 export const registerUser = createAsyncThunk("auth/register", async (data, {rejectWithValue}) => {
     try {
