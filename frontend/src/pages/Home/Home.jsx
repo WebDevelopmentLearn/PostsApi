@@ -72,7 +72,7 @@ export const Home = () => {
                 <form onSubmit={(event) => submitPost(event)} className={styles.CreatePostForm}>
                     <h1>Create Post</h1>
                     <input type="text" placeholder="Title" />
-                    <textarea placeholder="Content" />
+                    <textarea className={styles.PostContentArea} placeholder="Content" />
                     <button>Submit</button>
                 </form>
             </div>}

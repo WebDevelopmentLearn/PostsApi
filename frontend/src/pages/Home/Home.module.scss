@@ -114,3 +114,19 @@
         }
     }
 }
+
+.PostContentArea {
+  resize: vertical;
+  min-height: 30px;
+  padding: 4px;
+  border-radius: 4px;
+  border: none;
+  outline: 2px solid #c8a5eb;
+  transition: outline-color 0.5s;
+
+  &:focus {
+    outline-color: #541a89;
+
+  }
+
+}
