@@ -33,6 +33,38 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+
+router.delete("/:id", authenticateToken, async (req, res, next) => {
+    const { id } = req.params;
+    const user = req.user;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).send("Invalid ID format");
+    }
+    try {
+        const post = await Post.findById(id);
+        if (!post) {
+            return res.status(404).send("Post not found");
+        }
+        // console.log(post.author._id, user.id);
+        // console.log(post.author._id.toString() === user.id);
+        if (post.author._id.toString() !== user.id) {
+            return res.status(403).send("Forbidden: You can only delete your own posts");
+        }
+
+        await post.deleteOne();
+        await User.updateOne({ _id: user.id }, { $pull: { posts: post.id } });
+
+        res.json({
+            message: "Post successfully deleted",
+            post,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+
+
 router.post("/", authenticateToken, async (req, res, next) => {
     const { title, content } = req.body;
     const user = req.user;

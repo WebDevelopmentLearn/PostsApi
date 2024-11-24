@@ -67,3 +67,13 @@ export const createPost = createAsyncThunk("posts/createPost", async (data, {rej
         return rejectWithValue(error);
     }
 });
+
+
+export const deletePost = createAsyncThunk("posts/deletePost", async (postId, {rejectWithValue}) => {
+    try {
+        const response = await axios.delete(`${API_URL}/posts/${postId}`);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
