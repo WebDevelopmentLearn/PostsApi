@@ -32,6 +32,7 @@ export const RegisterForm = () => {
        } catch (error) {
            console.error("Error registering: ", error);
            alert("Failed to register: " + error.message);
+       }
     }
 
     // useEffect(() => {
