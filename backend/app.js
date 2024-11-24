@@ -16,7 +16,7 @@ const ENV = process.env.NODE_ENV || "development";
 const corsOptions = {
     origin: function (origin, callback) {
         // Разрешаем запросы с этих двух источников
-        if (origin === "http://35.159.129.233" || origin === "http://35.159.129.233:3000" || !origin) {
+        if (origin === `http://${process.env.HOST_IP}` || origin === `http://${process.env.HOST_IP}:3000` || !origin) {
             callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
