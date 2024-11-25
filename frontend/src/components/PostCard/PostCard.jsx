@@ -27,7 +27,7 @@ export const PostCard = ({post, isAuthenticated, user, handleDeletePost}) => {
                 {/*<p>{post?.content}</p>*/}
                 <ExpandableText textClass={styles.PostContent} maxHeight={100}>
                     {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '75%'}}/>}
-                    <p>{post?.content}</p>
+                    <p style={{whiteSpace: "pre-wrap"}}>{post?.content}</p>
                 </ExpandableText>
 
 
