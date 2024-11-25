@@ -1,13 +1,21 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {fetchPosts, fetchUser, createPost, deletePost, uploadImage, API_URL} from "../../store/reducers/actionCreators";
+import {
+    fetchPosts,
+    fetchUser,
+    createPost,
+    deletePost,
+    uploadImage,
+    API_URL,
+    refreshToken
+} from "../../store/reducers/actionCreators";
 import styles from "./Home.module.scss";
 import {ImageUpload} from "../../components";
 
 export const Home = () => {
     const dispatch = useDispatch();
     const {posts, status, createPostStatus, error} = useSelector((state) => state.postsReducer);
-    const {isAuthenticated, user} = useSelector((state) => state.authReducer);
+    const {isAuthenticated, user, accessToken} = useSelector((state) => state.authReducer);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [image, setImage] = useState(null); // Для хранения выбранного изображения
 
@@ -90,6 +98,17 @@ export const Home = () => {
     useEffect(() => {
         dispatch(fetchPosts());
     }, [dispatch]);
+
+    useEffect(async () => {
+        if (!accessToken) {
+            const result = await dispatch(refreshToken()).unwrap();
+            if (result.error) {
+                alert("Failed to refresh token: " + result.error.message);
+            } else {
+                dispatch(fetchUser());
+            }
+        }
+    }, [])
 
 
     return (

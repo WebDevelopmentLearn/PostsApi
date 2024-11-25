@@ -63,23 +63,45 @@ router.post("/login", async (req, res, next) => {
             message: "Invalid username or password",
         });
 
-        const token = jwt.sign({
+        // const token = jwt.sign({
+        //     id: user._id,
+        //     username: user.username,
+        //     role: user.role,
+        // }, jwtSecret, {
+        //     expiresIn: "1h",
+        // });
+
+        const accessToken = jwt.sign({
             id: user._id,
             username: user.username,
             role: user.role,
         }, jwtSecret, {
-            expiresIn: "1h",
+            expiresIn: "15m",
         });
 
-        res.cookie("token", token, {
+        const refreshToken = jwt.sign({
+            id: user._id,
+            username: user.username,
+            role: user.role,
+        }, jwtSecret, {
+            expiresIn: "7d",
+        });
+
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "production_secure",
+        //     sameSite: "strict",
+        // });
+        // Сохраняем refresh token в cookie (HttpOnly, Secure)
+        res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production_secure",
+            secure: process.env.NODE_ENV === "production_secure",  // Только в production
             sameSite: "strict",
         });
 
         res.json({
-            message: `User ${user.username} successfully logged in`,
-            token,
+            message: `Successfully logged in`,
+            accessToken,  // Отправляем access token в ответ
         });
 
     } catch (error) {
@@ -102,6 +124,26 @@ router.get("/profile", authenticateToken, async(req, res, next) => {
         next(error);
     }
 });
+
+// Маршрут для обновления токена
+router.post("/refresh-token", (req, res) => {
+    const { refreshToken } = req.cookies;  // Получаем refresh token из cookie
+
+    if (!refreshToken) {
+        return res.status(401).send("Refresh token not provided");
+    }
+
+    jwt.verify(refreshToken, jwtSecret, (err, decoded) => {
+        if (err) {
+            return res.status(403).send("Invalid or expired refresh token");
+        }
+
+        const accessToken = jwt.sign({ id: decoded.id, username: decoded.username }, jwtSecret, { expiresIn: '15m' });
+
+        res.json({ accessToken });
+    });
+});
+
 
 router.post("/logout", (req, res) => {
     res.clearCookie("token").send("Logged out successfully");

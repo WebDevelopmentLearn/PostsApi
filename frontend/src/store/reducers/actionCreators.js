@@ -40,6 +40,17 @@ export const fetchUser = createAsyncThunk("auth/fetchUser", async (_, {rejectWit
     }
 });
 
+export const refreshToken = createAsyncThunk("auth/refreshToken", async (_, {rejectWithValue}) => {
+    try {
+        const response = await axios.post(`${API_URL}/auth/refresh-token`, {}, {
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
 export const logout = createAsyncThunk("auth/logout", async (_, {rejectWithValue}) => {
     try {
         await axios.post(`${API_URL}/auth/logout`);

@@ -1,9 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {createPost, fetchUser, login, logout, registerUser} from "./actionCreators";
+import {createPost, fetchUser, login, logout, refreshToken, registerUser} from "./actionCreators";
 
 
 const initialState = {
-    token: null,
+    accessToken: null,
+    refreshToken: null,
     user: null,
     isAuthenticated: false,
     status: "IDLE",
@@ -29,8 +30,9 @@ const authSlice = createSlice({
             state.status = "LOADING";
             state.error = null;
         }).addCase(login.fulfilled, (state, action) => {
+            // console.log(action.payload);
             state.status = "SUCCEEDED";
-            state.token = action.payload.token;
+            state.accessToken = action.payload.accessToken;
             state.user = action.payload;
             state.isAuthenticated = true;
         }).addCase(login.rejected, (state, action) => {
@@ -51,14 +53,23 @@ const authSlice = createSlice({
             state.error = null;
         }).addCase(logout.fulfilled, (state, action) => {
             state.status = "SUCCEEDED";
-            state.token = null;
+            state.accessToken = null;
             state.user = null;
             state.isAuthenticated = false;
         }).addCase(logout.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload.response.data;
+        }).addCase(refreshToken.pending, (state, action) => {
+            state.status = "LOADING";
+            state.error = null;
+        }).addCase(refreshToken.fulfilled, (state, action) => {
+            state.status = "SUCCEEDED";
+            state.accessToken = action.payload.accessToken;
+            state.isAuthenticated = true;
+        }).addCase(refreshToken.rejected, (state, action) => {
+            state.status = "FAILED";
+            state.error = action.payload.response.data;
         })
-
         ;
     }
 });
