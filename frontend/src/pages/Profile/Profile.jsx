@@ -3,6 +3,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser, logout} from "../../store/reducers/actionCreators";
 import styles from "./Profile.module.scss";
+import avatar from "../../assets/profile/avatar150.png";
 
 export const Profile = () => {
     // const [user, setUser] = useState(null);
@@ -30,7 +31,8 @@ export const Profile = () => {
             <h1>Profile</h1>
             <div className={styles.ProfileContainer}>
                 <div className={styles.ProfileAvatar}>
-                    <img src="https://via.placeholder.com/150" alt="profile"/>
+                    {/*TODO: Implement getting an avatar from the server*/}
+                    <img src={avatar} alt="profile"/>
                 </div>
                 <div className={styles.ProfileDetails}>
                     <h2>UserId: {user ? user.id : "Loading..."}</h2>

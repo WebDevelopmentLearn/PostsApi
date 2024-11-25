@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
-import {login} from "../../store/reducers/actionCreators";
+import {fetchUser, login} from "../../store/reducers/actionCreators";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styles from "./LoginForm.module.scss";
@@ -35,6 +35,7 @@ export const LoginForm = () => {
     useEffect(() => {
         if(status === "SUCCEEDED" && isAuthenticated) {
             navigate("/");
+            dispatch(fetchUser());
         }
     }, [status, isAuthenticated, navigate]);
 

@@ -8,6 +8,10 @@
   color: #d3d3d3;
   padding: 12px 32px;
 }
+.Navbar h3 {
+  font-size: 24px;
+  font-weight: 700;
+}
 @media (max-width: 768px) {
   .Navbar {
     flex-direction: column;
@@ -22,6 +26,7 @@
   gap: 16px;
 }
 .LinksList a {
+  font-size: 20px;
   color: #d3d3d3;
   text-decoration: none;
   transition: color 0.5s;

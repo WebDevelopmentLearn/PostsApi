@@ -10,6 +10,11 @@
   color: #d3d3d3;
   padding: 12px 32px;
 
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -24,6 +29,7 @@
   flex-wrap: wrap;
   gap: 16px;
   a {
+    font-size: 20px;
     color: #d3d3d3;
     text-decoration: none;
     transition: color 0.5s;
