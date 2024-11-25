@@ -77,6 +77,7 @@ export const Profile = () => {
                     <h2>UserId: {user ? user.id : "Loading..."}</h2>
                     <h2>Username: {user ? user.username : "Loading..."}</h2>
                     <h2>Email: {user ? user.email : "Loading..."}</h2>
+                    <h2>Role: {user ? user.role : "Loading..."}</h2>
                     <h2>Posts count: {result}</h2>
                     <button className={styles.LogoutBtn} onClick={handleLogout}>Logout</button>
                 </div>

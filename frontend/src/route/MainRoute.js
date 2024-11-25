@@ -1,5 +1,5 @@
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Home, Login, Profile, ProtectedRoute, Register} from "../pages";
+import {Home, Login, Profile, ProtectedRoute, Register, UsersList} from "../pages";
 
 
 const MainRoute = ({user}) => {
@@ -11,6 +11,11 @@ const MainRoute = ({user}) => {
             <Route path="/profile" element={
                 <ProtectedRoute>
                     <Profile />
+                </ProtectedRoute>
+            } />
+            <Route path="/users" element={
+                <ProtectedRoute>
+                    <UsersList />
                 </ProtectedRoute>
             } />
 

@@ -110,3 +110,13 @@ export const uploadAvatar = createAsyncThunk("auth/uploadAvatar", async (formDat
         return rejectWithValue(error);
     }
 });
+
+
+export const fetchUsers = createAsyncThunk("users/fetchUsers", async (_, {rejectWithValue}) => {
+    try {
+        const response = await axios.get(`${API_URL}/users`);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});

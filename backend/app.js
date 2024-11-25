@@ -4,6 +4,7 @@ import cors from 'cors';
 import {connectToDatabase} from "./config/db.js";
 import authRouter from "./routes/auth.js";
 import postsRouter from "./routes/posts.js";
+import usersRouter from "./routes/users.js";
 
 import cookieParser from "cookie-parser";
 import multer from "multer";
@@ -54,6 +55,7 @@ async function startServer() {
 
         app.use('/auth', authRouter);
         app.use('/posts', postsRouter);
+        app.use('/users', usersRouter);
 
 
         app.use((err, req, res, next) => {

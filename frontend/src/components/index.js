@@ -5,3 +5,4 @@ export {ImageUpload} from "./ImageUpload/ImageUpload";
 export {PostCard} from "./PostCard/PostCard";
 export {CreatePostForm} from "./CreatePostForm/CreatePostForm";
 export {ExpandableText} from "./ExpandableText/ExpandableText";
+export {UserCard} from "./UserCard/UserCard";
