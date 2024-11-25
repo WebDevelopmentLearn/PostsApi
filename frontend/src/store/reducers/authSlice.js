@@ -62,7 +62,9 @@ const authSlice = createSlice({
             state.error = null;
         }).addCase(uploadAvatar.fulfilled, (state, action) => {
             state.status = "SUCCEEDED";
-            state.user = action.payload;
+            if (state.user) {
+                state.user.avatar = action.payload.avatar; // Обновляем аватар пользователя
+            }
         }).addCase(uploadAvatar.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload.response.data;

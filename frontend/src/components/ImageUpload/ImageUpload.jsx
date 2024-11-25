@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {uploadImage} from "../../store/reducers/actionCreators";
-
+import styles from "./ImageUpload.module.scss";
 export const ImageUpload = ({ onImageSelect }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -25,7 +25,7 @@ export const ImageUpload = ({ onImageSelect }) => {
     };
 
     return (
-        <div style={{margin: "16px"}}>
+        <div className={styles.ImageUpload}>
             <input style={{display: "none"}} id="uploadImage" type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileChange}/>
             <label style={{border: "1px dashed #000000", padding: "16px", cursor: "pointer"}} htmlFor="uploadImage">Click for upload image</label>
             {preview && <img src={preview} alt="Preview" style={{width: '200px', marginTop: '10px'}}/>}

@@ -23,8 +23,10 @@ const storage = multer.diskStorage({
         callback(null, 'public/avatars/'); // Папка для сохранения файлов
     },
     filename: (req, file, callback) => {
-        console.log("req: ", req);
-        callback(null, `${Date.now()}-${file.originalname}`); // Уникальное имя файла
+        //Расширение файла
+        const ext = path.extname(file.originalname);
+        // console.log("ext", ext);
+        callback(null, `${req.user.username}${ext}`); // Уникальное имя файла
     },
 });
 

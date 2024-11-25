@@ -7,7 +7,6 @@ import avatar from "../../assets/profile/avatar150.png";
 import {ImageUpload} from "../../components";
 
 export const Profile = () => {
-    // const [user, setUser] = useState(null);
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.authReducer);
     const {posts} = useSelector((state) => state.postsReducer);
@@ -72,8 +71,9 @@ export const Profile = () => {
             <div className={styles.ProfileContainer}>
                 <div className={styles.ProfileAvatar}>
                     {/*<img src={avatar} alt="profile"/>*/}
-                    <img src={`${API_URL}${user.avatar}`} alt=""/>
-                    <button onClick={handleOpenModal}>Upload avatar</button>
+                    {/*<img src={`${API_URL}${user.avatar}`} alt=""/>*/}
+                    <img src={`${API_URL}${user.avatar}?t=${new Date().getTime()}`} alt="User Avatar"/>
+                    <button className={styles.UploadAvatarBtn} onClick={handleOpenModal}>Upload avatar</button>
                 </div>
                 <div className={styles.ProfileDetails}>
                     <h2>UserId: {user ? user.id : "Loading..."}</h2>
