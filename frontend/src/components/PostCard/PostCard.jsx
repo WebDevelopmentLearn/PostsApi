@@ -11,8 +11,17 @@ export const PostCard = ({post, isAuthenticated, user, handleDeletePost}) => {
             <div className={styles.PostContents}>
 
                 <p>{post?.content}</p>
-                <p><strong>Author</strong>: {post?.author?.username}</p>
-                {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '50%'}}/>}
+                <div>
+                    <div>
+                        <p><strong>Author</strong>:
+                            <img style={{width: "20px"}} src={`${API_URL}${post.author.avatar}`} alt=""/>
+                            {post?.author?.username}
+                        </p>
+                    </div>
+                    <p><strong>Created at</strong>: {new Date(post?.createdAt).toLocaleString()}</p>
+
+                </div>
+                {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '75%'}}/>}
             </div>
             {(isAuthenticated && post?.author._id === user?.id) &&
                 <button onClick={() => handleDeletePost(post?._id)} className={styles.DeletePostBtn}>

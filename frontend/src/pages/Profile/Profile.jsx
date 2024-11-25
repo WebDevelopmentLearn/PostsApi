@@ -87,7 +87,7 @@ export const Profile = () => {
                         <div className={styles.ModalContent}>
                             <h2>Upload avatar</h2>
                             <ImageUpload onImageSelect={setImage}/>
-                            <button onClick={submitUploadAvatar}>Submit</button>
+                            <button className={styles.UploadAvatarSubmitBtn} onClick={submitUploadAvatar}>Upload</button>
                         </div>
                     </div>
                 )}
