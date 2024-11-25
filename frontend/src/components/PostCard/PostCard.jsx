@@ -1,27 +1,33 @@
 import styles from "./PostCard.module.scss";
 import {API_URL} from "../../store/reducers/actionCreators";
-
+import {ExpandableText} from "../ExpandableText/ExpandableText";
+import avatar from "../../assets/profile/avatar150.png";
 export const PostCard = ({post, isAuthenticated, user, handleDeletePost}) => {
 
     return (
         <div key={post?._id} className={styles.PostCard}>
-            <p>
-                <strong>{post?.title}</strong>
-            </p>
+            {/*<div>*/}
+            {/*    <div>*/}
+            {/*        <p><strong>Author</strong>:*/}
+            {/*            <img style={{width: "20px"}} src={`${API_URL}${post.author.avatar}`} alt=""/>*/}
+            {/*            {post?.author?.username}*/}
+            {/*        </p>*/}
+            {/*    </div>*/}
+            {/*    <p><strong>Created at</strong>: {new Date(post?.createdAt).toLocaleString()}</p>*/}
+            {/*</div>*/}
+            <div className={styles.PostCardLeft}>
+                <img style={{width: "150px", height: "150px", borderRadius: "50%", objectFit: "cover"}} src={post.author ? `${API_URL}${post.author.avatar}` : avatar} alt=""/>
+                <p>{post?.author?.username}</p>
+                <p><strong>Created at</strong>: {new Date(post?.createdAt).toLocaleString()}</p>
+            </div>
+
             <div className={styles.PostContents}>
-
-                <p>{post?.content}</p>
-                <div>
-                    <div>
-                        <p><strong>Author</strong>:
-                            <img style={{width: "20px"}} src={`${API_URL}${post.author.avatar}`} alt=""/>
-                            {post?.author?.username}
-                        </p>
-                    </div>
-                    <p><strong>Created at</strong>: {new Date(post?.createdAt).toLocaleString()}</p>
-
-                </div>
+                <strong>{post?.title}</strong>
                 {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '75%'}}/>}
+                {/*<p>{post?.content}</p>*/}
+                <ExpandableText text={post?.content} textClass={styles.PostContent} maxHeight={100}/>
+
+
             </div>
             {(isAuthenticated && post?.author._id === user?.id) &&
                 <button onClick={() => handleDeletePost(post?._id)} className={styles.DeletePostBtn}>

@@ -1,12 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {fetchPosts, fetchUser, createPost, deletePost, uploadImage, API_URL} from "../../store/reducers/actionCreators";
+import {fetchPosts, createPost, deletePost} from "../../store/reducers/actionCreators";
 import styles from "./Home.module.scss";
-import {CreatePostForm, ImageUpload, PostCard} from "../../components";
+import {CreatePostForm, PostCard} from "../../components";
 
 export const Home = () => {
     const dispatch = useDispatch();
-    const {posts, status, createPostStatus, error} = useSelector((state) => state.postsReducer);
+    const {posts} = useSelector((state) => state.postsReducer);
     const {isAuthenticated, user} = useSelector((state) => state.authReducer);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [image, setImage] = useState(null); // Для хранения выбранного изображения

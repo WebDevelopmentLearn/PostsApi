@@ -1,9 +1,7 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
-import axios from "axios";
+import {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {API_URL, createPost, fetchPosts, fetchUser, logout, uploadAvatar} from "../../store/reducers/actionCreators";
+import {API_URL, fetchUser, logout, uploadAvatar} from "../../store/reducers/actionCreators";
 import styles from "./Profile.module.scss";
-import avatar from "../../assets/profile/avatar150.png";
 import {ImageUpload} from "../../components";
 
 export const Profile = () => {

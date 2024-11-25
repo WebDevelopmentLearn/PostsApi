@@ -10,7 +10,7 @@ export const LoginForm = () => {
     const {register, handleSubmit} = useForm();
     const dispatch = useDispatch();
 
-    const {status, isAuthenticated, error} = useSelector((state) => state.authReducer);
+    const {status, isAuthenticated} = useSelector((state) => state.authReducer);
     const navigate = useNavigate();
 
 
@@ -27,8 +27,8 @@ export const LoginForm = () => {
                 alert("Login successful");
             }
         } catch (error) {
-            console.error("Error logging in: ", error);
-            alert("Failed to login: " + error.response.data);
+            console.error("Error logging in: ", error.response.data);
+            alert("Failed to login: " + error.response.data.message);
         }
     }
 

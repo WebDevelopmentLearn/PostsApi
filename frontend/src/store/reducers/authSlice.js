@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {createPost, fetchUser, login, logout, registerUser, uploadAvatar} from "./actionCreators";
+import {fetchUser, login, logout, registerUser, uploadAvatar} from "./actionCreators";
 
 
 const initialState = {

@@ -1,0 +1,33 @@
+.expandableTextContainer {
+  position: relative;
+  margin-bottom: 20px;
+}
+.expandableTextContainer a {
+  font-size: 1rem;
+  font-weight: 600;
+  transition: text-decoration 0.5s, color 0.5s;
+}
+.expandableTextContainer a:hover {
+  text-decoration: underline;
+  color: #0d50ff;
+}
+
+.expandableText {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  line-height: 1.6;
+}
+
+.expandBtn {
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+  transition: color 0.5s ease;
+  margin-bottom: 16px;
+}
+
+.expandBtn:hover {
+  color: #007bff;
+}
+
+/*# sourceMappingURL=ExpandableText.module.css.map */

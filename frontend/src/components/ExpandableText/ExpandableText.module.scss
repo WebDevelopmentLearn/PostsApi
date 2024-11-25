@@ -1,0 +1,40 @@
+//@import "../../styles/variables";
+//@import "../../styles/mixins";
+
+.expandableTextContainer {
+  position: relative;
+  margin-bottom: 20px;
+  //height: 100%;
+
+  a {
+    //@include fontSizeAndWeight($fontSize16, 600);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: text-decoration 0.5s, color 0.5s;
+    &:hover {
+      text-decoration: underline;
+      color: #0D50FFFF;//$lightBlueF
+    }
+  }
+}
+
+.expandableText {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  line-height: 1.6;
+
+
+}
+
+.expandBtn {
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+
+  transition: color 0.5s ease;
+  margin-bottom: 16px;
+}
+
+.expandBtn:hover {
+  color: #007bff;
+}

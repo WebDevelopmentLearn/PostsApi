@@ -5,10 +5,11 @@
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0px 5px 10px 4px rgba(0, 0, 0, 0.1);
-  width: fit-content;
-  max-width: 90vw;
+  //width: fit-content;
+  //max-width: 90vw;
+  width: 90vw;
   display: flex;
-  flex-direction: column;
+
 
   transition: background-color 0.5s, transform 0.5s;
   position: relative;
@@ -16,12 +17,29 @@
     background-color: #a0a0a0;
     transform: scale(1.02);
   }
+
 }
+
+.PostCardLeft {
+
+}
+
+
 
 .PostContents {
   padding: 25px;
   text-wrap: wrap;
   word-wrap: break-word;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.PostContent {
+  line-height: 26px;
+  overflow: hidden;
 }
 
 .DeletePostBtn {
@@ -51,5 +69,16 @@
   &:active {
     background-color: #a04d4d;
     transform: scale(0.9);
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .PostCard {
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  .PostContents {
+    padding: 8px;
   }
 }
