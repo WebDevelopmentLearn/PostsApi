@@ -23,9 +23,12 @@ export const PostCard = ({post, isAuthenticated, user, handleDeletePost}) => {
 
             <div className={styles.PostContents}>
                 <strong>{post?.title}</strong>
-                {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '75%'}}/>}
+
                 {/*<p>{post?.content}</p>*/}
-                <ExpandableText text={post?.content} textClass={styles.PostContent} maxHeight={100}/>
+                <ExpandableText textClass={styles.PostContent} maxHeight={100}>
+                    {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '75%'}}/>}
+                    <p>{post?.content}</p>
+                </ExpandableText>
 
 
             </div>

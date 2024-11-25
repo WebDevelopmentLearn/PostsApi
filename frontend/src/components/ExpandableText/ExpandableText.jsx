@@ -3,7 +3,7 @@ import styles from "./ExpandableText.module.scss";
 
 
 
-export const ExpandableText = ({textClass, text, maxHeight = 100}) => {
+export const ExpandableText = ({textClass, maxHeight = 100, children}) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const toggleExpand = () => {
@@ -17,7 +17,7 @@ export const ExpandableText = ({textClass, text, maxHeight = 100}) => {
                 style={{ maxHeight: isExpanded ? "100%" : `${maxHeight}px` }}>
                 {/*<p style={{whiteSpace: "pre-wrap"}}>{text}</p>*/}
 
-                <p style={{whiteSpace: "pre-wrap"}}>{text}</p>
+                {/*<p style={{whiteSpace: "pre-wrap"}}>{text}</p>*/}
                 {/*{(video && video !== "video_url") && (*/}
                 {/*    <div style={{marginTop: "16px"}}>*/}
                 {/*        <h3>Видеодемонстрация: </h3>*/}
@@ -35,6 +35,7 @@ export const ExpandableText = ({textClass, text, maxHeight = 100}) => {
                 {/*        />*/}
                 {/*    </div>*/}
                 {/*)}*/}
+                {children}
             </div>
             <button onClick={toggleExpand} className={styles.expandBtn}>
                 {isExpanded ? "Скрыть" : "Раскрыть полностью"}
