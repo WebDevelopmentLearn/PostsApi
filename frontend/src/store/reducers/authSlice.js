@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {createPost, fetchUser, login, logout, registerUser} from "./actionCreators";
+import {createPost, fetchUser, login, logout, registerUser, uploadAvatar} from "./actionCreators";
 
 
 const initialState = {
@@ -57,9 +57,16 @@ const authSlice = createSlice({
         }).addCase(logout.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload.response.data;
-        })
-
-        ;
+        }).addCase(uploadAvatar.pending, (state, action) => {
+            state.status = "LOADING";
+            state.error = null;
+        }).addCase(uploadAvatar.fulfilled, (state, action) => {
+            state.status = "SUCCEEDED";
+            state.user = action.payload;
+        }).addCase(uploadAvatar.rejected, (state, action) => {
+            state.status = "FAILED";
+            state.error = action.payload.response.data;
+        });
     }
 });
 

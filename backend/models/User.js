@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "user",
     },
+    avatar: {
+        type: String,
+        default: "/public/avatars/avatar_example.png",
+    },
     posts: [
         {
             type: mongoose.Schema.Types.ObjectId,

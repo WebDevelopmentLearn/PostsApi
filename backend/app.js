@@ -48,7 +48,10 @@ async function startServer() {
         });
 
         app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-        app.use(express.static('uploads'))
+        app.use(express.static('uploads'));
+        app.use('/public', express.static(path.join(process.cwd(), 'public')));
+        app.use(express.static('public'));
+
         app.use('/auth', authRouter);
         app.use('/posts', postsRouter);
 

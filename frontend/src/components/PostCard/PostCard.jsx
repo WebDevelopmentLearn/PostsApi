@@ -4,18 +4,18 @@ import {API_URL} from "../../store/reducers/actionCreators";
 export const PostCard = ({post, isAuthenticated, user, handleDeletePost}) => {
 
     return (
-        <div key={post._id} className={styles.PostCard}>
+        <div key={post?._id} className={styles.PostCard}>
             <p>
-                <strong>{post.title}</strong>
+                <strong>{post?.title}</strong>
             </p>
             <div className={styles.PostContents}>
 
-                <p>{post.content}</p>
-                <p><strong>Author</strong>: {post.author.username}</p>
+                <p>{post?.content}</p>
+                <p><strong>Author</strong>: {post?.author?.username}</p>
                 {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '50%'}}/>}
             </div>
-            {(isAuthenticated && post.author._id === user.id) &&
-                <button onClick={() => handleDeletePost(post._id)} className={styles.DeletePostBtn}>
+            {(isAuthenticated && post?.author._id === user?.id) &&
+                <button onClick={() => handleDeletePost(post?._id)} className={styles.DeletePostBtn}>
                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <path d="M20.5001 6H3.5" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round"/>

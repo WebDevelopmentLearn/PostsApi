@@ -33,12 +33,9 @@ export const Home = () => {
            const form = new FormData();
            form.append('title', title);
            form.append('content', content);
-
-
            if (image) {
                form.append('image', image); // Добавляем изображение в запрос
            }
-
 
            //dispatch(createPost(form));
            const result = await dispatch(createPost(form)).unwrap();
@@ -51,22 +48,10 @@ export const Home = () => {
                 setIsModalOpen(false);
                 dispatch(fetchPosts());
            }
-
-
-           // if (createPostStatus === "SUCCEEDED" && !error) {
-           //     alert("Post successfully created");
-           //     setIsModalOpen(false);
-           // }
-           // if (createPostStatus === "FAILED" && error) {
-           //     alert("Failed to create post: " + error.message);
-           //
-           // }
        } catch (error) {
            console.log(error);
            alert("Failed to create post: " + error.message);
        }
-
-
     }
 
     const handleDeletePost = async (postId) => {

@@ -12,11 +12,11 @@ const router = Router();
 
 // Настраиваем хранилище для загруженных файлов
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Папка для сохранения файлов
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/'); // Папка для сохранения файлов
     },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`); // Уникальное имя файла
+    filename: (req, file, callback) => {
+        callback(null, `${Date.now()}-${file.originalname}`); // Уникальное имя файла
     },
 });
 
@@ -24,19 +24,19 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // Ограничение на размер файла (5MB)
-    fileFilter: (req, file, cb) => {
+    fileFilter: (req, file, callback) => {
         // Проверка типа файла (например, только изображения)
         const fileTypes = /jpeg|jpg|png/;
         const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
         const mimeType = fileTypes.test(file.mimetype);
 
         if (extname && mimeType) {
-            cb(null, true);
+            callback(null, true);
         } else {
             // cb(new Error('Only images are allowed!'));
             const error = new Error('Only images are allowed!');
             error.code = 400;
-            return cb(error);
+            return callback(error);
         }
     }
 });
@@ -110,9 +110,7 @@ router.post("/", authenticateToken, upload.single('image'), async (req, res, nex
         return res.status(403).send("Forbidden: Invalid or expired token");
     }
     try {
-
         const imagePaths = req.file ? `/uploads/${req.file.filename}` : null;
-
         const post = new Post({
             title,
             content,

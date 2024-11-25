@@ -98,3 +98,15 @@ export const uploadImage = createAsyncThunk("posts/uploadImage", async (formData
         return rejectWithValue(error);
     }
 });
+
+export const uploadAvatar = createAsyncThunk("auth/uploadAvatar", async (formData, {rejectWithValue}) => {
+    try {
+        const response = await axios.put(`${API_URL}/auth/upload-avatar`, formData, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
