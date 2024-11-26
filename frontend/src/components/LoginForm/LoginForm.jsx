@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser, login} from "../../store/reducers/actionCreators";
 import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import styles from "./LoginForm.module.scss";
 
 export const LoginForm = () => {
@@ -28,7 +28,7 @@ export const LoginForm = () => {
             }
         } catch (error) {
             console.error("Error logging in: ", error.response.data);
-            alert("Failed to login: " + error.response.data.message);
+            alert("Failed to login: " + error.response.data);
         }
     }
 
@@ -47,14 +47,15 @@ export const LoginForm = () => {
                     value: true,
                     message: "This field is required"
                 }
-            })} type="text" placeholder="Username or Email"/>
+            })} type="text" placeholder="Username or Email" autoComplete="current-password"/>
             <input {...register("passwordInput", {
                 required: {
                     value: true,
                     message: "This field is required"
                 }
-            })} type="password" placeholder="Password"/>
+            })} type="password" placeholder="Password" autoComplete="current-password"/>
             <button className={styles.LoginBtn} type="submit">Login</button>
+            <Link to={"/register"}>Don't have an account? Register</Link>
         </form>
     )
 }

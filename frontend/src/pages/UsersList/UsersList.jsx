@@ -6,10 +6,12 @@ import styles from "./UsersList.module.scss";
 export const UsersList = () => {
 
     const {users} = useSelector(state => state.usersReducer);
+    const {user: admin} = useSelector(state => state.authReducer);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchUsers());
-    }, []);
+    }, [dispatch]);
+
 
     return (
         <div>
@@ -17,7 +19,7 @@ export const UsersList = () => {
             <ul className={styles.UsersList}>
                 {(users.length > 0 && users) ? users.map((user) => (
                     // <li key={user.id}>{user.username}</li>
-                    <UserCard key={user.id} user={user}/>
+                    <UserCard key={user._id} user={user} admin={admin}/>
                 )) : <p>No users found</p>}
             </ul>
         </div>

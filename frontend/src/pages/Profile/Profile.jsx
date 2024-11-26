@@ -2,7 +2,7 @@ import {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {API_URL, fetchUser, logout, uploadAvatar} from "../../store/reducers/actionCreators";
 import styles from "./Profile.module.scss";
-import {ImageUpload} from "../../components";
+import {ChangePasswordForm, ImageUpload} from "../../components";
 
 export const Profile = () => {
     const dispatch = useDispatch();
@@ -74,13 +74,18 @@ export const Profile = () => {
                     <button className={styles.UploadAvatarBtn} onClick={handleOpenModal}>Upload avatar</button>
                 </div>
                 <div className={styles.ProfileDetails}>
-                    <h2>UserId: {user ? user.id : "Loading..."}</h2>
-                    <h2>Username: {user ? user.username : "Loading..."}</h2>
-                    <h2>Email: {user ? user.email : "Loading..."}</h2>
-                    <h2>Role: {user ? user.role : "Loading..."}</h2>
-                    <h2>Posts count: {result}</h2>
-                    <button className={styles.LogoutBtn} onClick={handleLogout}>Logout</button>
+                    <h1>User Details</h1>
+                    <hr className={styles.Separator}/>
+                    <div className={styles.ProfileDetailsInfo}>
+                        <h2>UserId: {user ? user.id : "Loading..."}</h2>
+                        <h2>Username: {user ? user.username : "Loading..."}</h2>
+                        <h2>Email: {user ? user.email : "Loading..."}</h2>
+                        <h2>Role: {user ? user.role : "Loading..."}</h2>
+                        <h2>Posts count: {result}</h2>
+                        <button className={styles.LogoutBtn} onClick={handleLogout}>Logout</button>
+                    </div>
                 </div>
+                <ChangePasswordForm/>
                 {isModalOpen && (
                     <div className={styles.Modal} onClick={handleCloseModal}>
                         <div className={styles.ModalContent}>

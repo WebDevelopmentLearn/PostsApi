@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "/public/avatars/avatar_example.png",
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
     posts: [
         {
             type: mongoose.Schema.Types.ObjectId,

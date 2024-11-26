@@ -163,6 +163,35 @@ router.put("/upload-avatar", authenticateToken, upload.single("avatar"), async(r
 });
 
 
+router.put("/change-password", authenticateToken, async(req, res, next) => {
+    const { currentPassword, newPassword, confirmNewPassword } = req.body;
+    if (!currentPassword || !newPassword || !confirmNewPassword) return res.status(400).send("All fields must be filled in");
+    if (newPassword !== confirmNewPassword) return res.status(400).send("Passwords do not match");
+
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).send("User not found");
+
+        const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!passwordMatch) return res.status(401).send("Invalid current password");
+
+        const salt = 10;
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({
+            message: "Password changed successfully",
+        });
+
+    } catch (error) {
+        console.error("Error changing password: ", error);
+        next(error);
+    }
+});
+
+
 
 router.post("/logout", (req, res) => {
     res.clearCookie("token").send("Logged out successfully");

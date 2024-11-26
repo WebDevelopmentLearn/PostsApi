@@ -111,10 +111,38 @@ export const uploadAvatar = createAsyncThunk("auth/uploadAvatar", async (formDat
     }
 });
 
+// export const updateUser = createAsyncThunk("users/updateUser", async (data, {rejectWithValue}) => {
+//     try {
+//         const response = await axios.put(`${API_URL}/users`, data);
+//         return response.data;
+//     } catch (error) {
+//         return rejectWithValue(error);
+//     }
+// });
+
+export const changePassword = createAsyncThunk("auth/changePassword", async (data, {rejectWithValue}) => {
+    try {
+        const response = await axios.put(`${API_URL}/auth/change-password`, data);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async (_, {rejectWithValue}) => {
     try {
         const response = await axios.get(`${API_URL}/users`);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
+
+export const deleteUser = createAsyncThunk("users/deleteUser", async (userId, {rejectWithValue}) => {
+    try {
+        const response = await axios.delete(`${API_URL}/users/${userId}`);
         return response.data;
     } catch (error) {
         return rejectWithValue(error);

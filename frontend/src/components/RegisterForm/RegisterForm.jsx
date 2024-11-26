@@ -2,8 +2,9 @@ import {useForm} from "react-hook-form";
 import styles from "./RegisterForm.module.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {registerUser} from "../../store/reducers/actionCreators";
+import {clearStatus} from "../../store/reducers/authSlice";
 export const RegisterForm = () => {
     const {register, handleSubmit, formState: {errors}} = useForm({
         mode: "onChange",
@@ -34,6 +35,7 @@ export const RegisterForm = () => {
         if (registerStatus === "SUCCEEDED") {
             alert("Registration successful");
             navigate("/login");
+            dispatch(clearStatus("registerStatus"));
 
         }
     }, [dispatch, registerStatus]);
@@ -50,7 +52,7 @@ export const RegisterForm = () => {
                     value: 4,
                     message: "Username must be at least 4 characters long",
                 },
-            })} type="text" placeholder="Username"/>
+            })} type="text" placeholder="Username" autoComplete="username"/>
             {errors.usernameInput && <p style={{color: "#b73939", fontWeight: "500"}}>{errors.usernameInput.message}</p>}
             <input {...register("emailInput", {
                 required: {
@@ -61,7 +63,7 @@ export const RegisterForm = () => {
                     value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                     message: "Invalid email address",
                 },
-            })} type="text" placeholder="Email"/>
+            })} type="text" placeholder="Email" autoComplete="email"/>
             {errors.emailInput && <p style={{color: "#b73939", fontWeight: "500"}}>{errors.emailInput.message}</p>}
             <input {...register("passwordInput", {
                 required: {
@@ -72,9 +74,13 @@ export const RegisterForm = () => {
                     value: 6,
                     message: "Password must be at least 6 characters long",
                 }
-            })} type="password" placeholder="Password"/>
+            })} type="password" placeholder="Password" autoComplete="new-password"/>
             {errors.passwordInput && <p style={{color: "#b73939", fontWeight: "500"}}>{errors.passwordInput.message}</p>}
             <button className={styles.RegisterBtn} type="submit">Register</button>
+            <div>
+                {/*<span>Already registered? <Link to={}><Link  /></span>*/}
+                <Link to={"/login"}>Already registered?</Link>
+            </div>
         </form>
     )
 }

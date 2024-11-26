@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchUser, login, logout, registerUser, uploadAvatar} from "./actionCreators";
+import {changePassword, fetchUser, login, logout, registerUser, uploadAvatar} from "./actionCreators";
 
 
 const initialState = {
@@ -14,7 +14,12 @@ const initialState = {
 const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        clearStatus(state, action) {
+            state[action.payload] = "IDLE";
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(registerUser.pending, (state, action) => {
             state.registerStatus = "LOADING";
@@ -68,8 +73,19 @@ const authSlice = createSlice({
         }).addCase(uploadAvatar.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload.response.data;
-        });
+        }).addCase(changePassword.pending, (state, action) => {
+            state.status = "LOADING";
+            state.error = null;
+        }).addCase(changePassword.fulfilled, (state, action) => {
+            state.status = "SUCCEEDED";
+        }).addCase(changePassword.rejected, (state, action) => {
+            state.status = "FAILED";
+            state.error = action.payload.response.data
+        })
+
+        ;
     }
 });
 
 export default authSlice.reducer;
+export const {clearStatus} = authSlice.actions;
