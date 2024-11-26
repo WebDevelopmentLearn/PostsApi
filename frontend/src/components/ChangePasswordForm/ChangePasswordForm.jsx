@@ -1,4 +1,4 @@
-import styles from "./ChangePasswordForm.module.css";
+import styles from "./ChangePasswordForm.module.scss";
 import {useForm} from "react-hook-form";
 import {changePassword} from "../../store/reducers/actionCreators";
 import {useDispatch} from "react-redux";
