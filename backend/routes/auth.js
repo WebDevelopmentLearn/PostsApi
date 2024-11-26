@@ -84,12 +84,16 @@ router.post("/register", checkUserIsAlreadyRegistered, async (req, res, next) =>
 //     "message": "User 007killer2 successfully logged in",
 //     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2UyZWEwYjBlNmY3OTQzMWIwYjQ1YiIsInVzZXJuYW1lIjoiMDA3a2lsbGVyMiIsImlhdCI6MTczMjEzMTkzMiwiZXhwIjoxNzMyMTM1NTMyfQ.lCZDWU0WnU0h_ZkDu4s31dvDbvLuBLLf8sj2gATJ_5k"
 // }
+const emailPattern = /.+\@.+\..+/;
 router.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
+
     if (!username || !password) return res.status(400).send("All fields must be filled in");
 
     try {
-        const user = await User.findOne({ username });
+        const isEmail = emailPattern.test(username);
+        const filter = isEmail ? { email: username } : { username };
+        const user = await User.findOne(filter);
 
         if (!user) return res.status(404).send("Invalid username or password");
 
