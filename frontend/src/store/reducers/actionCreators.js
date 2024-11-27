@@ -29,6 +29,16 @@ export const login = createAsyncThunk("auth/login", async (data, {rejectWithValu
     }
 });
 
+export const forgotPassword = createAsyncThunk("auth/forgotPassword", async (data, {rejectWithValue}) => {
+    try {
+        const response = await axios.post(`${API_URL}/auth/forgot-password`, data);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
+
 export const fetchUser = createAsyncThunk("auth/fetchUser", async (_, {rejectWithValue}) => {
     try {
         const response = await axios.get(`${API_URL}/auth/profile`, {
@@ -123,6 +133,16 @@ export const uploadAvatar = createAsyncThunk("auth/uploadAvatar", async (formDat
 export const changePassword = createAsyncThunk("auth/changePassword", async (data, {rejectWithValue}) => {
     try {
         const response = await axios.put(`${API_URL}/auth/change-password`, data);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
+export const resetPassword = createAsyncThunk("auth/resetPassword", async (data, {rejectWithValue}) => {
+    try {
+        console.log("Data: ", data);
+        const response = await axios.post(`${API_URL}/auth/reset-password`, data);
         return response.data;
     } catch (error) {
         return rejectWithValue(error);

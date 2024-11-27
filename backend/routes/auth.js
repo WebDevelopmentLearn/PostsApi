@@ -6,6 +6,9 @@ import User from "../models/User.js";
 import authenticateToken from "../middlewares/authenticateToken.js";
 import multer from "multer";
 import path from "node:path";
+import {sendEmail} from "../config/gmailtransporter.js";
+import Token from "../models/Token.js";
+import crypto from "crypto";
 
 const router = Router();
 const jwtSecret = process.env.JWT_SECRET;
@@ -194,6 +197,97 @@ router.put("/change-password", authenticateToken, async(req, res, next) => {
         next(error);
     }
 });
+
+
+router.post("/forgot-password", async (req, res, next) => {
+    const {email} = req.body;
+    if (!email) return res.status(400).send("Email field must be filled in");
+    try {
+
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).send("User not found");
+
+        let token = await Token.findOne({ userId: user._id });
+        if (token) await token.deleteOne();
+
+        let resetToken = crypto.randomBytes(32).toString("hex");
+        const hash = await bcrypt.hash(resetToken, 10);
+        await new Token({
+            userId: user._id,
+            token: hash,
+            createdAt: Date.now(),
+        }).save();
+
+        // const link = `http://localhost:3000/reset-password/${user._id}/${resetToken}`;
+        const link = `http://localhost:3000/reset-password?token=${resetToken}&id=${user._id}`;
+
+
+        await sendEmail(
+            user.email,
+            "Password recovery",
+            `If you requested a password recovery, click on the link below. If not, ignore this email.`,
+            `
+            <h1>Your recovery link: ${link}</h1>
+            `
+        )
+
+        res.json({
+            message: "Recovery link sent successfully",
+        });
+
+    } catch (error) {
+        console.error("Error recovering password: ", error);
+        next(error);
+    }
+});
+
+
+router.post("/reset-password", async (req, res, next) => {
+    const {token, id, newPassword, confirmNewPassword} = req.body;
+
+    console.log("Token: ", token);
+    console.log("Id: ", id);
+    console.log("Params: ", req.params);
+    if (!newPassword || !confirmNewPassword) return res.status(400).send("All fields must be filled in");
+    if (!token) return res.status(400).send("Invalid token");
+    try {
+        let passwordResetToken = await Token.findOne({ userId: id });
+        if (!passwordResetToken) return res.status(403).send("Invalid or expired token");
+
+        const isValid = await bcrypt.compare(token, passwordResetToken.token);
+        if (!isValid) return res.status(403).send("Invalid or expired token");
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await User.updateOne(
+            { _id: id },
+            { $set: { password: hashedPassword } },
+            { new: true }
+        );
+
+        const user = await User.findById(id);
+
+        await sendEmail(
+            user.email,
+            "Password reset",
+            `Your password has been successfully reset.`,
+            `
+            <h1>Your password has been successfully reset.</h1>
+            `
+        )
+
+        await passwordResetToken.deleteOne();
+
+        res.json({
+            message: "Password reset successfully",
+        });
+
+    } catch (error) {
+        console.error("Error resetting password: ", error);
+        next(error);
+    }
+});
+
 
 
 

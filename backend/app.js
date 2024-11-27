@@ -9,6 +9,7 @@ import usersRouter from "./routes/users.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import * as path from "node:path";
+import gmailTransporterInstance from "./config/gmailtransporter.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,6 +57,18 @@ async function startServer() {
         app.use('/auth', authRouter);
         app.use('/posts', postsRouter);
         app.use('/users', usersRouter);
+
+        // const testEmail = true;
+        //
+        // if (testEmail) {
+        //     gmailTransporterInstance.sendMail({
+        //         from: process.env.GMAIL_USERNAME,
+        //         to: "",
+        //         subject: "Test email",
+        //         text: "This is a test email",
+        //         html: "<h1>This is a test email</h1>",
+        //     });
+        // }
 
 
         app.use((err, req, res, next) => {

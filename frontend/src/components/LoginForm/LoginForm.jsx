@@ -56,6 +56,7 @@ export const LoginForm = () => {
             })} type="password" placeholder="Password" autoComplete="current-password"/>
             <button className={styles.LoginBtn} type="submit">Login</button>
             <Link to={"/register"}>Don't have an account? Register</Link>
+            <Link to={"/forgot-password"}>Forgot password?</Link>
         </form>
     )
 }

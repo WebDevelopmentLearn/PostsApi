@@ -1,5 +1,14 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {changePassword, fetchUser, login, logout, registerUser, uploadAvatar} from "./actionCreators";
+import {
+    changePassword,
+    fetchUser,
+    forgotPassword,
+    login,
+    logout,
+    registerUser,
+    resetPassword,
+    uploadAvatar
+} from "./actionCreators";
 
 
 const initialState = {
@@ -73,16 +82,34 @@ const authSlice = createSlice({
         }).addCase(uploadAvatar.rejected, (state, action) => {
             state.status = "FAILED";
             state.error = action.payload.response.data;
-        }).addCase(changePassword.pending, (state, action) => {
+        })
+
+        .addCase(changePassword.pending, (state, action) => {
             state.status = "LOADING";
             state.error = null;
         }).addCase(changePassword.fulfilled, (state, action) => {
             state.status = "SUCCEEDED";
         }).addCase(changePassword.rejected, (state, action) => {
             state.status = "FAILED";
-            state.error = action.payload.response.data
-        })
+            state.error = action.payload.response.data;
+        }).addCase(forgotPassword.pending, (state, action) => {
+            state.status = "LOADING";
+            state.error = null;
+        }).addCase(forgotPassword.fulfilled, (state, action) => {
+            state.status = "SUCCEEDED";
 
+        }).addCase(forgotPassword.rejected, (state, action) => {
+            state.status = "FAILED";
+            state.error = action.payload.response.data;
+        }).addCase(resetPassword.pending, (state, action) => {
+            state.status = "LOADING";
+            state.error = null;
+        }).addCase(resetPassword.fulfilled, (state, action) => {
+            state.status = "SUCCEEDED";
+        }).addCase(resetPassword.rejected, (state, action) => {
+            state.status = "FAILED";
+            state.error = action.payload.response.data;
+        })
         ;
     }
 });

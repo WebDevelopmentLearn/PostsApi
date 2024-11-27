@@ -1,13 +1,15 @@
-import {Navigate, Route, Routes} from "react-router-dom";
-import {Home, Login, Profile, ProtectedRoute, Register, UsersList} from "../pages";
+import {Route, Routes} from "react-router-dom";
+import {ForgotPassword, Home, Login, Profile, ProtectedRoute, Register, ResetPassword, UsersList} from "../pages";
 
 
-const MainRoute = ({user}) => {
+const MainRoute = () => {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/profile" element={
                 <ProtectedRoute>
                     <Profile />
