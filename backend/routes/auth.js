@@ -219,7 +219,7 @@ router.post("/forgot-password", async (req, res, next) => {
         }).save();
 
         // const link = `http://localhost:3000/reset-password/${user._id}/${resetToken}`;
-        const link = `http://localhost:3000/reset-password?token=${resetToken}&id=${user._id}`;
+        const link = `http://${process.env.HOST_IP ?? "localhost"}:3000/reset-password?token=${resetToken}&id=${user._id}`;
 
 
         await sendEmail(
