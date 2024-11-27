@@ -7,3 +7,5 @@ export {CreatePostForm} from "./CreatePostForm/CreatePostForm";
 export {ExpandableText} from "./ExpandableText/ExpandableText";
 export {UserCard} from "./UserCard/UserCard";
 export {ChangePasswordForm} from "./ChangePasswordForm/ChangePasswordForm";
+export {ForgotPasswordForm} from "./ForgotPasswordForm/ForgotPasswordForm";
+export {ResetPasswordForm} from "./ResetPasswordForm/ResetPasswordForm";

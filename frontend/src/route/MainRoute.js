@@ -1,5 +1,15 @@
 import {Route, Routes} from "react-router-dom";
-import {ForgotPassword, Home, Login, Profile, ProtectedRoute, Register, ResetPassword, UsersList} from "../pages";
+import {
+    ForgotPassword,
+    ForgotPasswordForm,
+    Home,
+    Login,
+    Profile,
+    ProtectedRoute,
+    Register,
+    ResetPassword,
+    UsersList
+} from "../pages";
 
 
 const MainRoute = () => {
