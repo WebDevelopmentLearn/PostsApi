@@ -11,8 +11,8 @@ export const Profile = () => {
     const {posts} = useSelector((state) => state.postsReducer);
 
     const calculatePosts = useCallback(() => {
-        return posts.filter((post) => post.author._id === user.id).length;
-    }, [posts, user.id]);
+        return posts.filter((post) => post?.author?._id === user?.id).length;
+    }, [posts, user?.id]);
 
     const result = calculatePosts();
 

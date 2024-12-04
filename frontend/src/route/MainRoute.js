@@ -1,8 +1,8 @@
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {Home, Login, Profile, ProtectedRoute, Register} from "../pages";
 
 
-const MainRoute = ({user}) => {
+const MainRoute = () => {
     return (
         <Routes>
             <Route path="/" element={<Home />} />

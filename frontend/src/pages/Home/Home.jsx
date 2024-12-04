@@ -96,18 +96,26 @@ export const Home = () => {
     }
 
     useEffect(() => {
-        dispatch(fetchPosts());
-    }, [dispatch]);
-
-    useEffect(async () => {
-        if (!accessToken) {
-            const result = await dispatch(refreshToken()).unwrap();
+        const fetchData = async () => {
+            const result = await dispatch(fetchPosts()).unwrap();
             if (result.error) {
-                alert("Failed to refresh token: " + result.error.message);
-            } else {
-                dispatch(fetchUser());
+                alert("Failed to fetch posts: " + result.error.message);
             }
         }
+        fetchData();
+    }, [dispatch]);
+
+    useEffect (() => {
+        const fetchData = async () => {
+            if (accessToken) {
+                const result = await dispatch(refreshToken()).unwrap();
+                if (result) {
+                    await dispatch(fetchUser());
+                }
+
+            }
+        }
+        fetchData();
     }, [])
 
 
@@ -126,8 +134,9 @@ export const Home = () => {
                             <p><strong>Author</strong>: {post.author.username}</p>
                             {post.image && <img src={`${API_URL}${post.image}`} alt="Post" style={{maxWidth: '50%'}}/>}
                         </div>
-                        {(isAuthenticated && post.author._id === user.id) &&
-                            <button onClick={() => handleDeletePost(post._id)} className={styles.DeletePostBtn}>
+                        {user ? (
+                            (isAuthenticated && post?.author && post?.author._id === user?.id) &&
+                            <button onClick={() => handleDeletePost(post?._id)} className={styles.DeletePostBtn}>
                                 <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path d="M20.5001 6H3.5" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round"/>
@@ -140,7 +149,10 @@ export const Home = () => {
                                         d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
                                         stroke="#1C274C" strokeWidth="1.5"/>
                                 </svg>
-                            </button>}
+                            </button>
+                        ) : (
+                            <p>Loading...</p>
+                        )}
                     </li>
                 )) : <p>No posts found</p>}
             </ul>

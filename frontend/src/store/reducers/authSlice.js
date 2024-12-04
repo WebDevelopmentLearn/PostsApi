@@ -3,10 +3,10 @@ import {createPost, fetchUser, login, logout, refreshToken, registerUser} from "
 
 
 const initialState = {
-    accessToken: null,
+    accessToken: localStorage.getItem("accessToken"),
     refreshToken: null,
     user: null,
-    isAuthenticated: false,
+    isAuthenticated: localStorage.getItem("accessToken") !== null,
     status: "IDLE",
     error: null,
     registerStatus: "IDLE",

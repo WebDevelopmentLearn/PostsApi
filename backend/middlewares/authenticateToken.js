@@ -26,8 +26,8 @@ const jwtSecret = process.env.JWT_SECRET;
 //     })
 // }
 function authenticateToken(req, res, next) {
-    const token = req.cookies.token;  // Токен будет доступен в req.cookies
-
+    const token = req.cookies.refreshToken;  // Токен будет доступен в req.cookies
+    console.log("refreshToken: ", token);
     if (!token) {
         return res.status(401).json({
             message: "Unauthorized: Token not provided"
