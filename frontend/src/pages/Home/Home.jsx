@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {fetchPosts, createPost, deletePost} from "../../store/reducers/actionCreators";
 import styles from "./Home.module.scss";
 import {CreatePostForm, PostCard} from "../../components";
+import {EditPostForm} from "../../components/EditPostForm/EditPostForm";
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -11,6 +12,27 @@ export const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [image, setImage] = useState(null); // Для хранения выбранного изображения
 
+    const [targetPost, setTargetPost] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const handleSelectPost = (event, post) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setTargetPost(post);
+        console.log(targetPost);
+        openEditModal();
+    }
+
+
+    const openEditModal = () => {
+        setIsEditModalOpen(true);
+    }
+
+    const closeEditModal = (event) => {
+        if (event.target.className === styles.Modal) {
+            setIsEditModalOpen(false);
+        }
+    }
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -91,7 +113,7 @@ export const Home = () => {
             <h1>Home</h1>
             <ul className={styles.PostsList}>
                 {posts.length > 0 ? posts.map((post) => (
-                    <PostCard key={post._id} post={post} isAuthenticated={isAuthenticated} user={user} handleDeletePost={handleDeletePost}/>
+                    <PostCard key={post._id} post={post} isAuthenticated={isAuthenticated} user={user} handleDeletePost={handleDeletePost} handleSelectPost={handleSelectPost}/>
                 )) : <p>No posts found</p>}
             </ul>
             {/*<div>*/}
@@ -100,6 +122,10 @@ export const Home = () => {
             {isAuthenticated && <button className={styles.AddPostBtn} onClick={openModal}>+</button>}
             {isModalOpen && <div onClick={(event) => closeModal(event)} className={styles.Modal}>
                 <CreatePostForm submitPost={submitPost} isAuthenticated={isAuthenticated} setImage={setImage}/>
+            </div>}
+
+            {isEditModalOpen && <div onClick={(event) => closeEditModal(event)} className={styles.Modal}>
+                <EditPostForm post={targetPost}/>
             </div>}
         </div>
     )
