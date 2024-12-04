@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import multer from "multer";
 import path from "node:path";
 import {checkRole} from "../middlewares/checkRole.js";
+import * as fs from "node:fs";
 
 
 const router = Router();
@@ -16,6 +17,7 @@ const storage = multer.diskStorage({
         callback(null, 'uploads/'); // Папка для сохранения файлов
     },
     filename: (req, file, callback) => {
+        console.log("req: ", req);
         callback(null, `${Date.now()}-${file.originalname}`); // Уникальное имя файла
     },
 });
@@ -76,22 +78,30 @@ router.delete("/:id", authenticateToken, async (req, res, next) => {
         return res.status(400).send("Invalid ID format");
     }
     try {
-        const post = await Post.findById(id);
-        if (!post) {
+        const deletedPost = await Post.findByIdAndDelete({ _id: id });
+        if (!deletedPost) {
             return res.status(404).send("Post not found");
         }
+
+        if (deletedPost.image) {
+            await fs.unlink(path.join(`${process.cwd()}${deletedPost.image}`), (err) => {
+                if (err) {
+                    console.error("Error deleting image: ", err);
+                }
+            });
+        }
+
         // console.log(post.author._id, user.id);
         // console.log(post.author._id.toString() === user.id);
-        if (post.author._id.toString() !== user.id) {
+        if (deletedPost.author._id.toString() !== user.id) {
             return res.status(403).send("Forbidden: You can only delete your own posts");
         }
 
-        await post.deleteOne();
-        await User.updateOne({ _id: user.id }, { $pull: { posts: post.id } });
+        await User.updateOne({ _id: user.id }, { $pull: { posts: deletedPost.id } });
 
         res.json({
             message: "Post successfully deleted",
-            post,
+            deletedPost,
         });
     } catch (error) {
         next(error);
