@@ -8,16 +8,14 @@
 
   background-color: #282828;
   color: #d3d3d3;
-  padding: 12px 32px;
+  padding: 8px 32px;
+  height: 56px;
 
   h3 {
     font-size: 24px;
     font-weight: 700;
   }
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
 
 
 }
@@ -41,6 +39,44 @@
   .isActive {
     color: #59889c;
   }
+}
+
+.ProfileLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #d3d3d3;
+  text-decoration: none;
+  transition: color 0.5s, transform 0.5s;
+  height: 100%;
+  border-radius: 8px;
+  img {
+    //width: 56px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    color: #6ea4c2;
+    transform: scale(1.1);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Navbar {
+
+    flex-direction: column;
+    //justify-content: center;
+    //align-items: center;
+    height: max-content;
+  }
+
+  //.LinksList {
+  //  flex-direction: column;
+  //}
+
 }
 
 
