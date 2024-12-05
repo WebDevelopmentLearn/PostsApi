@@ -22,7 +22,7 @@ router.delete("/:id", authenticateToken, checkRole("admin"), async (req, res, ne
     try {
         const user = await User.findByIdAndDelete(id);
         if (!user) {
-            return res.status(404).send("User not found");
+            return res.status(404).json({message: "User not found"});
         }
 
         //if user has avatar and posts, delete them

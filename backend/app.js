@@ -46,7 +46,7 @@ async function startServer() {
         app.use(cookieParser());
 
         app.get('/', (req, res, next) => {
-            res.send('Hello World!');
+            res.json({message: 'Hello World!'});
         });
 
         app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));

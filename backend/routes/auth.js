@@ -16,7 +16,7 @@ const jwtSecret = process.env.JWT_SECRET;
 async function checkUserIsAlreadyRegistered(req, res, next) {
     const { username, email } = req.body;
     const user = await User.findOne({ $or: [{ username }, { email }] });
-    if (user) return res.status(400).send("User already registered");
+    if (user) return res.status(400).json({message: "User already registered"});
     next();
 }
 
@@ -58,7 +58,7 @@ const upload = multer({
 
 router.post("/register", checkUserIsAlreadyRegistered, async (req, res, next) => {
     const { username, email, password } = req.body;
-    if (!username || !email || !password) return res.status(400).send("All fields must be filled in");
+    if (!username || !email || !password) return res.status(400).json({message: "All fields must be filled in"});
 
     try {
         const salt = 10;
@@ -91,14 +91,14 @@ const emailPattern = /.+\@.+\..+/;
 router.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
 
-    if (!username || !password) return res.status(400).send("All fields must be filled in");
+    if (!username || !password) return res.status(400).json({message: "All fields must be filled in"});
 
     try {
         const isEmail = emailPattern.test(username);
         const filter = isEmail ? { email: username } : { username };
         const user = await User.findOne(filter);
 
-        if (!user) return res.status(404).send("Invalid username or password");
+        if (!user) return res.status(404).json({message: "Invalid username or password"});
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -121,7 +121,7 @@ router.post("/login", async (req, res, next) => {
         });
 
         res.json({
-            message: `User ${user.username} successfully logged in`,
+            message: `Logged in successfully`,
             token,
         });
 
@@ -135,7 +135,9 @@ router.get("/profile", authenticateToken, async(req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).send("User not found");
+            return res.status(404).json({
+                message: "User not found",
+            });
         }
         // const imagePaths = req.file ? `/uploads/${req.file.filename}` : null;
         if (!user.avatar) {
@@ -154,7 +156,9 @@ router.put("/upload-avatar", authenticateToken, upload.single("avatar"), async(r
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).send("User not found");
+            return res.status(404).json({
+                message: "User not found",
+            });
         }
         const imagePaths = req.file ? `/public/avatars/${req.file.filename}` : null;
         user.avatar = imagePaths;
@@ -172,15 +176,17 @@ router.put("/upload-avatar", authenticateToken, upload.single("avatar"), async(r
 
 router.put("/change-password", authenticateToken, async(req, res, next) => {
     const { currentPassword, newPassword, confirmNewPassword } = req.body;
-    if (!currentPassword || !newPassword || !confirmNewPassword) return res.status(400).send("All fields must be filled in");
-    if (newPassword !== confirmNewPassword) return res.status(400).send("Passwords do not match");
+    if (!currentPassword || !newPassword || !confirmNewPassword) return res.status(400).json({message: "All fields must be filled in"});
+    if (newPassword !== confirmNewPassword) return res.status(400).json({message: "Passwords do not match"});
 
     try {
         const user = await User.findById(req.user.id);
-        if (!user) return res.status(404).send("User not found");
+        if (!user)  return res.status(404).json({
+            message: "User not found",
+        });
 
         const passwordMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!passwordMatch) return res.status(401).send("Invalid current password");
+        if (!passwordMatch) return res.status(401).json({message: "Invalid current password"});
 
         const salt = 10;
         const hashedPassword = await bcrypt.hash(newPassword, salt);
@@ -201,11 +207,11 @@ router.put("/change-password", authenticateToken, async(req, res, next) => {
 
 router.post("/forgot-password", async (req, res, next) => {
     const {email} = req.body;
-    if (!email) return res.status(400).send("Email field must be filled in");
+    if (!email) return res.status(400).json({message: "Email field must be filled in"});
     try {
 
         const user = await User.findOne({ email });
-        if (!user) return res.status(404).send("User not found");
+        if (!user) return res.status(404).json({message: "User not found"});
 
         let token = await Token.findOne({ userId: user._id });
         if (token) await token.deleteOne();
@@ -248,14 +254,14 @@ router.post("/reset-password", async (req, res, next) => {
     console.log("Token: ", token);
     console.log("Id: ", id);
     console.log("Params: ", req.params);
-    if (!newPassword || !confirmNewPassword) return res.status(400).send("All fields must be filled in");
-    if (!token) return res.status(400).send("Invalid token");
+    if (!newPassword || !confirmNewPassword) return res.status(400).json({message: "All fields must be filled in"});
+    if (!token) return res.status(400).json({message: "Invalid token"});
     try {
         let passwordResetToken = await Token.findOne({ userId: id });
-        if (!passwordResetToken) return res.status(403).send("Invalid or expired token");
+        if (!passwordResetToken) return res.status(403).json({message: "Invalid or expired token"});
 
         const isValid = await bcrypt.compare(token, passwordResetToken.token);
-        if (!isValid) return res.status(403).send("Invalid or expired token");
+        if (!isValid) return res.status(403).json({message: "Invalid or expired token"});
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
@@ -292,7 +298,7 @@ router.post("/reset-password", async (req, res, next) => {
 
 
 router.post("/logout", (req, res) => {
-    res.clearCookie("token").send("Logged out successfully");
+    res.clearCookie("token").json({message: "Logged out successfully"});
 });
 
 export default router;

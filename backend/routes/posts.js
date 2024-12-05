@@ -56,13 +56,13 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).send("Invalid ID format");
+        return res.status(400).json({message: "Invalid ID format"});
     }
     try {
         // const post = await Post.find({author: {_id: id}}).populate("author", "username");
         const posts = await Post.find({ author: id }).populate("author", "username");
         if (!posts || posts.length === 0) {
-            return res.status(404).send("No posts found for this author");
+            return res.status(404).json({message: "No posts found for this author"});
         }
         res.json(posts);
     } catch (error) {
@@ -75,12 +75,12 @@ router.delete("/:id", authenticateToken, async (req, res, next) => {
     const { id } = req.params;
     const user = req.user;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).send("Invalid ID format");
+        return res.status(400).json({message: "Invalid ID format"});
     }
     try {
         const deletedPost = await Post.findByIdAndDelete({ _id: id });
         if (!deletedPost) {
-            return res.status(404).send("Post not found");
+            return res.status(404).json({message: "Post not found"});
         }
 
         if (deletedPost.image) {
@@ -94,7 +94,7 @@ router.delete("/:id", authenticateToken, async (req, res, next) => {
         // console.log(post.author._id, user.id);
         // console.log(post.author._id.toString() === user.id);
         if (deletedPost.author._id.toString() !== user.id) {
-            return res.status(403).send("Forbidden: You can only delete your own posts");
+            return res.status(403).json({message: "Forbidden: You can only delete your own posts"});
         }
 
         await User.updateOne({ _id: user.id }, { $pull: { posts: deletedPost.id } });
@@ -114,10 +114,10 @@ router.post("/", authenticateToken, upload.single('image'), async (req, res, nex
     const { title, content } = req.body;
     const user = req.user;
     if (!title || !content) {
-        return res.status(400).send("All fields must be filled in");
+        return res.status(400).json({message: "All fields must be filled in"});
     }
     if (!user) {
-        return res.status(403).send("Forbidden: Invalid or expired token");
+        return res.status(403).json({message: "Forbidden: Invalid or expired token"});
     }
     try {
         const imagePaths = req.file ? `/uploads/${req.file.filename}` : null;
