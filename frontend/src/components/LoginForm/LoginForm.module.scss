@@ -45,7 +45,8 @@
   cursor: pointer;
 
   transition: background-color 0.5s, transform 0.5s;
-
+  display: flex;
+    justify-content: center;
   &:hover {
     background-color: #45a049;
     transform: scale(1.05);

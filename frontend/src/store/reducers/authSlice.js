@@ -12,12 +12,26 @@ import {
 
 
 const initialState = {
-    token: null,
+
+    accessToken: sessionStorage.getItem("accessToken"),
+    refreshToken: null,
     user: null,
-    isAuthenticated: false,
-    status: "IDLE",
-    error: null,
+    isAuthenticated: sessionStorage.getItem("accessToken") !== null,
+
     registerStatus: "IDLE",
+    registerError: null,
+
+    loginStatus: "IDLE",
+    loginError: null,
+
+    fetchUserStatus: "IDLE",
+    fetchUserError: null,
+
+    logoutStatus: "IDLE",
+    logoutError: null,
+
+    refreshTokenStatus: "IDLE",
+    refreshTokenError: null,
 }
 
 const authSlice = createSlice({
@@ -40,16 +54,17 @@ const authSlice = createSlice({
             console.log(action);
             state.error = action.payload.response.data;
         }).addCase(login.pending, (state, action) => {
-            state.status = "LOADING";
-            state.error = null;
+            state.loginStatus = "LOADING";
+            state.loginError = null;
         }).addCase(login.fulfilled, (state, action) => {
-            state.status = "SUCCEEDED";
+            state.loginStatus = "SUCCEEDED";
             state.token = action.payload.token;
             state.user = action.payload;
             state.isAuthenticated = true;
+            state.loginError = null;
         }).addCase(login.rejected, (state, action) => {
-            state.status = "FAILED";
-            state.error = action.payload.response.data;
+            state.loginStatus = "FAILED";
+            state.loginError = action.payload || "Login failed";
         }).addCase(fetchUser.pending, (state, action) => {
             state.status = "LOADING";
             state.error = null;

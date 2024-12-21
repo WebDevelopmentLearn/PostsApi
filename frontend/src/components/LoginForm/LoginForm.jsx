@@ -4,13 +4,14 @@ import {fetchUser, login} from "../../store/reducers/actionCreators";
 import {useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import styles from "./LoginForm.module.scss";
+import {Loader} from "../Loader/Loader";
 
 export const LoginForm = () => {
 
     const {register, handleSubmit} = useForm();
     const dispatch = useDispatch();
 
-    const {status, isAuthenticated} = useSelector((state) => state.authReducer);
+    const {loginStatus, isAuthenticated} = useSelector((state) => state.authReducer);
     const navigate = useNavigate();
 
 
@@ -24,20 +25,21 @@ export const LoginForm = () => {
             if (result.error) {
                 alert("Failed to login: " + result.error.message);
             } else {
-                alert("Login successful");
+                alert("Login successful1");
             }
         } catch (error) {
-            console.error("Error logging in: ", error.response.data);
-            alert("Failed to login: " + error.response.data);
+
+            console.error("Error logging in: ", error);
+            alert("Failed to login: " + error);
         }
     }
 
     useEffect(() => {
-        if(status === "SUCCEEDED" && isAuthenticated) {
+        if(loginStatus === "SUCCEEDED" && isAuthenticated) {
             navigate("/");
             dispatch(fetchUser());
         }
-    }, [status, isAuthenticated, navigate]);
+    }, [loginStatus, isAuthenticated, navigate]);
 
     return (
         <form className={styles.LoginForm} onSubmit={handleSubmit(submitForm)} action="">
@@ -54,7 +56,9 @@ export const LoginForm = () => {
                     message: "This field is required"
                 }
             })} type="password" placeholder="Password" autoComplete="current-password"/>
-            <button className={styles.LoginBtn} type="submit">Login</button>
+            <button className={styles.LoginBtn} type="submit">{
+                loginStatus === "LOADING" ? <Loader  size="20px" stroke="3px"/> : "Login"
+            }</button>
             <Link to={"/register"}>Don't have an account? Register</Link>
             <Link to={"/forgot-password"}>Forgot password?</Link>
         </form>

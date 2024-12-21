@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 
 axios.defaults.withCredentials = true;
 
@@ -11,21 +11,35 @@ export const registerUser = createAsyncThunk("auth/register", async (data, {reje
         console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log(error);
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
 
-export const login = createAsyncThunk("auth/login", async (data, {rejectWithValue}) => {
+export const login = createAsyncThunk("auth/login", async (data, { rejectWithValue }) => {
     try {
         const response = await axios.post(`${API_URL}/auth/login`, data);
-
         return response.data;
-        // return rejectWithValue(result);
     } catch (error) {
-
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -34,7 +48,16 @@ export const forgotPassword = createAsyncThunk("auth/forgotPassword", async (dat
         const response = await axios.post(`${API_URL}/auth/forgot-password`, data);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -46,7 +69,16 @@ export const fetchUser = createAsyncThunk("auth/fetchUser", async (_, {rejectWit
         });
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -55,7 +87,16 @@ export const logout = createAsyncThunk("auth/logout", async (_, {rejectWithValue
         await axios.post(`${API_URL}/auth/logout`);
         return null;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -65,7 +106,16 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (_, {reject
         const response = await axios.get(`${API_URL}/posts`);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -76,7 +126,16 @@ export const createPost = createAsyncThunk("posts/createPost", async (data, {rej
         });
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -86,7 +145,16 @@ export const deletePost = createAsyncThunk("posts/deletePost", async (postId, {r
         const response = await axios.delete(`${API_URL}/posts/${postId}`);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -105,7 +173,16 @@ export const uploadImage = createAsyncThunk("posts/uploadImage", async (formData
         });
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -117,7 +194,16 @@ export const uploadAvatar = createAsyncThunk("auth/uploadAvatar", async (formDat
         });
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -135,7 +221,16 @@ export const changePassword = createAsyncThunk("auth/changePassword", async (dat
         const response = await axios.put(`${API_URL}/auth/change-password`, data);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -145,7 +240,16 @@ export const resetPassword = createAsyncThunk("auth/resetPassword", async (data,
         const response = await axios.post(`${API_URL}/auth/reset-password`, data);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -155,7 +259,16 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async (_, {reject
         const response = await axios.get(`${API_URL}/users`);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });
 
@@ -165,6 +278,15 @@ export const deleteUser = createAsyncThunk("users/deleteUser", async (userId, {r
         const response = await axios.delete(`${API_URL}/users/${userId}`);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error)) {
+            // Return custom error message from backend if present
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                // If no custom message, return a general error
+                return rejectWithValue('Something went wrong, please try again.');
+            }
+        }
+        return rejectWithValue(error.message || 'Unknown error');
     }
 });

@@ -2,11 +2,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {fetchPosts, createPost, deletePost} from "../../store/reducers/actionCreators";
 import styles from "./Home.module.scss";
-import {CreatePostForm, PostCard} from "../../components";
+import {CreatePostForm, Notification, PostCard} from "../../components";
 
 export const Home = () => {
     const dispatch = useDispatch();
-    const {posts} = useSelector((state) => state.postsReducer);
+    const {posts, fetchPostsError} = useSelector((state) => state.postsReducer);
     const {isAuthenticated, user} = useSelector((state) => state.authReducer);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [image, setImage] = useState(null); // Для хранения выбранного изображения
@@ -87,7 +87,7 @@ export const Home = () => {
     // }, [posts, isAuthenticated, user]);
 
     return (
-        <div>
+        <div className={styles.Home}>
             <h1>Home</h1>
             <ul className={styles.PostsList}>
                 {posts.length > 0 ? posts.map((post) => (
@@ -101,6 +101,7 @@ export const Home = () => {
             {isModalOpen && <div onClick={(event) => closeModal(event)} className={styles.Modal}>
                 <CreatePostForm submitPost={submitPost} isAuthenticated={isAuthenticated} setImage={setImage}/>
             </div>}
+            {fetchPostsError && <Notification type={"ERROR"} message={fetchPostsError} fullMessage={"tEST"}/> }
         </div>
     )
 }

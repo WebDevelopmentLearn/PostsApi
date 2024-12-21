@@ -9,3 +9,6 @@ export {UserCard} from "./UserCard/UserCard";
 export {ChangePasswordForm} from "./ChangePasswordForm/ChangePasswordForm";
 export {ForgotPasswordForm} from "./ForgotPasswordForm/ForgotPasswordForm";
 export {ResetPasswordForm} from "./ResetPasswordForm/ResetPasswordForm";
+export {Loader} from "./Loader/Loader";
+
+export {Notification} from "./Notification/Notification";
